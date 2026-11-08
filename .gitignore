@@ -1,0 +1,15 @@
+# Operating System files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE & Editor folders
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Local SQLite databases (created automatically by the application models)
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
