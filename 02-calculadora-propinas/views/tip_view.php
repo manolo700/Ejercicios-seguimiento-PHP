@@ -177,13 +177,21 @@ require __DIR__ . '/../../shared/header.php';
 </div>
 
 <script>
-document.querySelectorAll('.tip-preset').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.tip-preset').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        document.getElementById('tip_percent').value = this.dataset.value;
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.tip-preset').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tip-preset').forEach(function(b) {
+                b.classList.remove('active');
+            });
+            this.classList.add('active');
+            const tipPercentInput = document.getElementById('tip_percent');
+            if (tipPercentInput) {
+                tipPercentInput.value = this.dataset.value;
+            }
+        });
     });
 });
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
+

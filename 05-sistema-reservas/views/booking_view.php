@@ -192,27 +192,32 @@ require __DIR__ . '/../../shared/header.php';
 </div>
 
 <script>
-const slotButtons = document.querySelectorAll('.slot-btn');
-const clientSection = document.getElementById('clientDetailsSection');
-const displaySelectedTime = document.getElementById('displaySelectedTime');
-const inputBookingTime = document.getElementById('inputBookingTime');
+document.addEventListener('DOMContentLoaded', function() {
+    const slotButtons = document.querySelectorAll('.slot-btn');
+    const clientSection = document.getElementById('clientDetailsSection');
+    const displaySelectedTime = document.getElementById('displaySelectedTime');
+    const inputBookingTime = document.getElementById('inputBookingTime');
 
-slotButtons.forEach(btn => {
-    btn.addEventListener('click', function() {
-        slotButtons.forEach(b => {
-            b.classList.remove('btn-success', 'text-white');
-            b.classList.add('btn-outline-success');
+    slotButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            slotButtons.forEach(b => {
+                b.classList.remove('btn-success', 'text-white');
+                b.classList.add('btn-outline-success');
+            });
+            this.classList.remove('btn-outline-success');
+            this.classList.add('btn-success', 'text-white');
+
+            const time = this.dataset.time;
+            if (displaySelectedTime) displaySelectedTime.textContent = time + ' hrs';
+            if (inputBookingTime) inputBookingTime.value = time;
+            if (clientSection) {
+                clientSection.style.display = 'block';
+                clientSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         });
-        this.classList.remove('btn-outline-success');
-        this.classList.add('btn-success', 'text-white');
-
-        const time = this.dataset.time;
-        displaySelectedTime.textContent = time + ' hrs';
-        inputBookingTime.value = time;
-        clientSection.style.display = 'block';
-        clientSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 });
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
+

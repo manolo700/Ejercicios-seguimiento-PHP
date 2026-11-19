@@ -203,198 +203,229 @@ require __DIR__ . '/../../shared/header.php';
 </div>
 
 <script>
-let startTime = 0;
-let elapsedTime = 0;
-let timerInterval = null;
-let isRunning = false;
+document.addEventListener('DOMContentLoaded', function() {
+    let startTime = 0;
+    let elapsedTime = 0;
+    let timerInterval = null;
+    let isRunning = false;
 
-let lastLapTime = 0;
-let laps = [];
+    let lastLapTime = 0;
+    let laps = [];
 
-const displayTime = document.getElementById('displayTime');
-const currentLapDisplay = document.getElementById('currentLapDisplay');
-const timerStatus = document.getElementById('timerStatus');
+    const displayTime = document.getElementById('displayTime');
+    const currentLapDisplay = document.getElementById('currentLapDisplay');
+    const timerStatus = document.getElementById('timerStatus');
 
-const btnStart = document.getElementById('btnStart');
-const btnPause = document.getElementById('btnPause');
-const btnLap = document.getElementById('btnLap');
-const btnReset = document.getElementById('btnReset');
-const btnSaveModal = document.getElementById('btnSaveModal');
-const btnExportCSV = document.getElementById('btnExportCSV');
+    const btnStart = document.getElementById('btnStart');
+    const btnPause = document.getElementById('btnPause');
+    const btnLap = document.getElementById('btnLap');
+    const btnReset = document.getElementById('btnReset');
+    const btnSaveModal = document.getElementById('btnSaveModal');
+    const btnExportCSV = document.getElementById('btnExportCSV');
 
-const lapsTableBody = document.getElementById('lapsTableBody');
-const lapsEmptyMessage = document.getElementById('lapsEmptyMessage');
-const lapsTableWrapper = document.getElementById('lapsTableWrapper');
-const lapsBadge = document.getElementById('lapsBadge');
+    const lapsTableBody = document.getElementById('lapsTableBody');
+    const lapsEmptyMessage = document.getElementById('lapsEmptyMessage');
+    const lapsTableWrapper = document.getElementById('lapsTableWrapper');
+    const lapsBadge = document.getElementById('lapsBadge');
 
-function formatMs(ms) {
-    const hours = Math.floor(ms / 3600000);
-    const minutes = Math.floor((ms % 3600000) / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-    const millis = Math.floor((ms % 1000) / 10);
+    function formatMs(ms) {
+        const hours = Math.floor(ms / 3600000);
+        const minutes = Math.floor((ms % 3600000) / 60000);
+        const seconds = Math.floor((ms % 60000) / 1000);
+        const millis = Math.floor((ms % 1000) / 10);
 
-    const h = String(hours).padStart(2, '0');
-    const m = String(minutes).padStart(2, '0');
-    const s = String(seconds).padStart(2, '0');
-    const msStr = String(millis).padStart(2, '0');
+        const h = String(hours).padStart(2, '0');
+        const m = String(minutes).padStart(2, '0');
+        const s = String(seconds).padStart(2, '0');
+        const msStr = String(millis).padStart(2, '0');
 
-    return `${h}:${m}:${s}.${msStr}`;
-}
-
-function updateDisplays() {
-    const now = Date.now();
-    const currentTotal = elapsedTime + (isRunning ? (now - startTime) : 0);
-    displayTime.textContent = formatMs(currentTotal);
-
-    const currentLapTotal = currentTotal - lastLapTime;
-    currentLapDisplay.textContent = formatMs(currentLapTotal);
-}
-
-btnStart.addEventListener('click', function() {
-    if (!isRunning) {
-        isRunning = true;
-        startTime = Date.now();
-        timerInterval = setInterval(updateDisplays, 25);
-
-        btnStart.style.display = 'none';
-        btnPause.style.display = 'inline-block';
-        btnLap.disabled = false;
-        btnReset.disabled = false;
-        btnSaveModal.disabled = true;
-
-        timerStatus.textContent = 'En ejecución';
-        timerStatus.className = 'badge bg-success text-light px-3 py-1 mb-2 text-uppercase';
-    }
-});
-
-btnPause.addEventListener('click', function() {
-    if (isRunning) {
-        isRunning = false;
-        clearInterval(timerInterval);
-        elapsedTime += Date.now() - startTime;
-        updateDisplays();
-
-        btnStart.style.display = 'inline-block';
-        btnStart.innerHTML = '<i class="bi bi-play-fill me-1"></i> Reanudar';
-        btnPause.style.display = 'none';
-        btnLap.disabled = true;
-        btnSaveModal.disabled = false;
-
-        timerStatus.textContent = 'Pausado';
-        timerStatus.className = 'badge bg-warning text-dark px-3 py-1 mb-2 text-uppercase';
-    }
-});
-
-btnReset.addEventListener('click', function() {
-    isRunning = false;
-    clearInterval(timerInterval);
-    startTime = 0;
-    elapsedTime = 0;
-    lastLapTime = 0;
-    laps = [];
-
-    displayTime.textContent = '00:00:00.00';
-    currentLapDisplay.textContent = '00:00.00';
-
-    btnStart.style.display = 'inline-block';
-    btnStart.innerHTML = '<i class="bi bi-play-fill me-1"></i> Iniciar';
-    btnPause.style.display = 'none';
-    btnLap.disabled = true;
-    btnReset.disabled = true;
-    btnSaveModal.disabled = true;
-    btnExportCSV.disabled = true;
-
-    timerStatus.textContent = 'Detenido';
-    timerStatus.className = 'badge bg-secondary bg-opacity-50 text-light px-3 py-1 mb-2 text-uppercase';
-
-    renderLaps();
-});
-
-btnLap.addEventListener('click', function() {
-    const currentTotal = elapsedTime + (Date.now() - startTime);
-    const lapDuration = currentTotal - lastLapTime;
-    lastLapTime = currentTotal;
-
-    laps.unshift({
-        number: laps.length + 1,
-        lap_ms: lapDuration,
-        overall_ms: currentTotal
-    });
-
-    renderLaps();
-});
-
-function renderLaps() {
-    if (laps.length === 0) {
-        lapsEmptyMessage.style.display = 'block';
-        lapsTableWrapper.style.display = 'none';
-        lapsBadge.textContent = '0 vueltas';
-        btnExportCSV.disabled = true;
-        return;
+        return `${h}:${m}:${s}.${msStr}`;
     }
 
-    lapsEmptyMessage.style.display = 'none';
-    lapsTableWrapper.style.display = 'block';
-    lapsBadge.textContent = laps.length + ' vuelta' + (laps.length > 1 ? 's' : '');
-    btnExportCSV.disabled = false;
+    function updateDisplays() {
+        const now = Date.now();
+        const currentTotal = elapsedTime + (isRunning ? (now - startTime) : 0);
+        if (displayTime) displayTime.textContent = formatMs(currentTotal);
 
-    // Determine fastest & slowest
-    let minMs = Infinity;
-    let maxMs = -Infinity;
-    if (laps.length >= 2) {
-        laps.forEach(l => {
-            if (l.lap_ms < minMs) minMs = l.lap_ms;
-            if (l.lap_ms > maxMs) maxMs = l.lap_ms;
+        const currentLapTotal = currentTotal - lastLapTime;
+        if (currentLapDisplay) currentLapDisplay.textContent = formatMs(currentLapTotal);
+    }
+
+    if (btnStart) {
+        btnStart.addEventListener('click', function() {
+            if (!isRunning) {
+                isRunning = true;
+                startTime = Date.now();
+                timerInterval = setInterval(updateDisplays, 25);
+
+                btnStart.style.display = 'none';
+                if (btnPause) btnPause.style.display = 'inline-block';
+                if (btnLap) btnLap.disabled = false;
+                if (btnReset) btnReset.disabled = false;
+                if (btnSaveModal) btnSaveModal.disabled = true;
+
+                if (timerStatus) {
+                    timerStatus.textContent = 'En ejecución';
+                    timerStatus.className = 'badge bg-success text-light px-3 py-1 mb-2 text-uppercase';
+                }
+            }
         });
     }
 
-    lapsTableBody.innerHTML = '';
-    laps.forEach(l => {
-        const tr = document.createElement('tr');
-        let lapClass = '';
-        let badge = '';
+    if (btnPause) {
+        btnPause.addEventListener('click', function() {
+            if (isRunning) {
+                isRunning = false;
+                clearInterval(timerInterval);
+                elapsedTime += Date.now() - startTime;
+                updateDisplays();
 
-        if (laps.length >= 2) {
-            if (l.lap_ms === minMs) {
-                lapClass = 'lap-fastest';
-                badge = ' <span class="badge bg-success-subtle text-success ms-1">Rápida</span>';
-            } else if (l.lap_ms === maxMs) {
-                lapClass = 'lap-slowest';
-                badge = ' <span class="badge bg-danger-subtle text-danger ms-1">Lenta</span>';
+                if (btnStart) {
+                    btnStart.style.display = 'inline-block';
+                    btnStart.innerHTML = '<i class="bi bi-play-fill me-1"></i> Reanudar';
+                }
+                btnPause.style.display = 'none';
+                if (btnLap) btnLap.disabled = true;
+                if (btnSaveModal) btnSaveModal.disabled = false;
+
+                if (timerStatus) {
+                    timerStatus.textContent = 'Pausado';
+                    timerStatus.className = 'badge bg-warning text-dark px-3 py-1 mb-2 text-uppercase';
+                }
             }
+        });
+    }
+
+    if (btnReset) {
+        btnReset.addEventListener('click', function() {
+            isRunning = false;
+            clearInterval(timerInterval);
+            startTime = 0;
+            elapsedTime = 0;
+            lastLapTime = 0;
+            laps = [];
+
+            if (displayTime) displayTime.textContent = '00:00:00.00';
+            if (currentLapDisplay) currentLapDisplay.textContent = '00:00.00';
+
+            if (btnStart) {
+                btnStart.style.display = 'inline-block';
+                btnStart.innerHTML = '<i class="bi bi-play-fill me-1"></i> Iniciar';
+            }
+            if (btnPause) btnPause.style.display = 'none';
+            if (btnLap) btnLap.disabled = true;
+            btnReset.disabled = true;
+            if (btnSaveModal) btnSaveModal.disabled = true;
+            if (btnExportCSV) btnExportCSV.disabled = true;
+
+            if (timerStatus) {
+                timerStatus.textContent = 'Detenido';
+                timerStatus.className = 'badge bg-secondary bg-opacity-50 text-light px-3 py-1 mb-2 text-uppercase';
+            }
+
+            renderLaps();
+        });
+    }
+
+    if (btnLap) {
+        btnLap.addEventListener('click', function() {
+            const currentTotal = elapsedTime + (Date.now() - startTime);
+            const lapDuration = currentTotal - lastLapTime;
+            lastLapTime = currentTotal;
+
+            laps.unshift({
+                number: laps.length + 1,
+                lap_ms: lapDuration,
+                overall_ms: currentTotal
+            });
+
+            renderLaps();
+        });
+    }
+
+    function renderLaps() {
+        if (!lapsEmptyMessage || !lapsTableWrapper || !lapsBadge) return;
+
+        if (laps.length === 0) {
+            lapsEmptyMessage.style.display = 'block';
+            lapsTableWrapper.style.display = 'none';
+            lapsBadge.textContent = '0 vueltas';
+            if (btnExportCSV) btnExportCSV.disabled = true;
+            return;
         }
 
-        tr.innerHTML = `
-            <td>#${l.number}</td>
-            <td class="${lapClass}">${formatMs(l.lap_ms)} ${badge}</td>
-            <td>${formatMs(l.overall_ms)}</td>
-        `;
-        lapsTableBody.appendChild(tr);
-    });
-}
+        lapsEmptyMessage.style.display = 'none';
+        lapsTableWrapper.style.display = 'block';
+        lapsBadge.textContent = laps.length + ' vuelta' + (laps.length > 1 ? 's' : '');
+        if (btnExportCSV) btnExportCSV.disabled = false;
 
-// Modal prefill
-btnSaveModal.addEventListener('click', function() {
-    document.getElementById('inputTotalTimeMs').value = elapsedTime;
-    document.getElementById('inputLapsJson').value = JSON.stringify(laps);
-    document.getElementById('modalSummaryTotal').textContent = formatMs(elapsedTime);
-    document.getElementById('modalSummaryLaps').textContent = laps.length;
-});
+        let minMs = Infinity;
+        let maxMs = -Infinity;
+        if (laps.length >= 2) {
+            laps.forEach(l => {
+                if (l.lap_ms < minMs) minMs = l.lap_ms;
+                if (l.lap_ms > maxMs) maxMs = l.lap_ms;
+            });
+        }
 
-// CSV Export
-btnExportCSV.addEventListener('click', function() {
-    if (laps.length === 0) return;
-    let csv = 'Vuelta,Tiempo de Vuelta,Tiempo Acumulado\n';
-    laps.forEach(l => {
-        csv += `${l.number},"${formatMs(l.lap_ms)}","${formatMs(l.overall_ms)}"\n`;
-    });
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `cronometro_vueltas_${Date.now()}.csv`;
-    link.click();
+        if (lapsTableBody) {
+            lapsTableBody.innerHTML = '';
+            laps.forEach(l => {
+                const tr = document.createElement('tr');
+                let lapClass = '';
+                let badge = '';
+
+                if (laps.length >= 2) {
+                    if (l.lap_ms === minMs) {
+                        lapClass = 'lap-fastest';
+                        badge = ' <span class="badge bg-success-subtle text-success ms-1">Rápida</span>';
+                    } else if (l.lap_ms === maxMs) {
+                        lapClass = 'lap-slowest';
+                        badge = ' <span class="badge bg-danger-subtle text-danger ms-1">Lenta</span>';
+                    }
+                }
+
+                tr.innerHTML = `
+                    <td>#${l.number}</td>
+                    <td class="${lapClass}">${formatMs(l.lap_ms)} ${badge}</td>
+                    <td>${formatMs(l.overall_ms)}</td>
+                `;
+                lapsTableBody.appendChild(tr);
+            });
+        }
+    }
+
+    if (btnSaveModal) {
+        btnSaveModal.addEventListener('click', function() {
+            const inputTotal = document.getElementById('inputTotalTimeMs');
+            const inputLaps = document.getElementById('inputLapsJson');
+            const modalTotal = document.getElementById('modalSummaryTotal');
+            const modalLaps = document.getElementById('modalSummaryLaps');
+
+            if (inputTotal) inputTotal.value = elapsedTime;
+            if (inputLaps) inputLaps.value = JSON.stringify(laps);
+            if (modalTotal) modalTotal.textContent = formatMs(elapsedTime);
+            if (modalLaps) modalLaps.textContent = laps.length;
+        });
+    }
+
+    if (btnExportCSV) {
+        btnExportCSV.addEventListener('click', function() {
+            if (laps.length === 0) return;
+            let csv = 'Vuelta,Tiempo de Vuelta,Tiempo Acumulado\n';
+            laps.forEach(l => {
+                csv += `${l.number},"${formatMs(l.lap_ms)}","${formatMs(l.overall_ms)}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `cronometro_vueltas_${Date.now()}.csv`;
+            link.click();
+        });
+    }
 });
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
+

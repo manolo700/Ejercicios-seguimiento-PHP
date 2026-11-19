@@ -42,3 +42,4 @@ class PasswordController {
         require __DIR__ . '/../views/password_view.php';
     }
 }
+

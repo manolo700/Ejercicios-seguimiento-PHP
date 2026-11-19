@@ -209,50 +209,60 @@ require __DIR__ . '/../../shared/header.php';
 </div>
 
 <script>
-document.getElementById('btnAddOption').addEventListener('click', function() {
-    const container = document.getElementById('optionsContainer');
-    const count = container.children.length + 1;
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.name = 'options[]';
-    input.className = 'form-control form-control-sm';
-    input.placeholder = 'Opción ' + count;
-    container.appendChild(input);
-});
-
-<?php if ($activePoll): ?>
-const ctx = document.getElementById('pollChart').getContext('2d');
-const labels = <?= json_encode(array_column($activePoll['options'], 'option_text')) ?>;
-const data = <?= json_encode(array_column($activePoll['options'], 'votes')) ?>;
-
-new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Votos',
-            data: data,
-            backgroundColor: [
-                '#4f46e5', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'
-            ],
-            borderRadius: 6
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { display: false }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: { stepSize: 1 }
-            }
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    const btnAddOption = document.getElementById('btnAddOption');
+    if (btnAddOption) {
+        btnAddOption.addEventListener('click', function() {
+            const container = document.getElementById('optionsContainer');
+            if (!container) return;
+            const count = container.children.length + 1;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'options[]';
+            input.className = 'form-control form-control-sm';
+            input.placeholder = 'Opción ' + count;
+            container.appendChild(input);
+        });
     }
+
+    <?php if ($activePoll): ?>
+    const chartCanvas = document.getElementById('pollChart');
+    if (chartCanvas && typeof Chart !== 'undefined') {
+        const ctx = chartCanvas.getContext('2d');
+        const labels = <?= json_encode(array_column($activePoll['options'], 'option_text')) ?>;
+        const data = <?= json_encode(array_column($activePoll['options'], 'votes')) ?>;
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Votos',
+                    data: data,
+                    backgroundColor: [
+                        '#4f46e5', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'
+                    ],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1 }
+                    }
+                }
+            }
+        });
+    }
+    <?php endif; ?>
 });
-<?php endif; ?>
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
+

@@ -92,3 +92,4 @@ class PollController {
         exit;
     }
 }
+

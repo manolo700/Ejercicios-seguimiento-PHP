@@ -116,3 +116,4 @@ class Stopwatch {
         return sprintf('%02d:%02d.%02d', $minutes, $seconds, $millis);
     }
 }
+

@@ -273,33 +273,41 @@ require __DIR__ . '/../../shared/header.php';
 </div>
 
 <script>
-const viewRecipeModal = new bootstrap.Modal(document.getElementById('viewRecipeModal'));
-document.querySelectorAll('.view-recipe-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.getElementById('viewRecipeTitle').textContent = this.dataset.title;
-        document.getElementById('viewRecipeDesc').textContent = this.dataset.desc;
-        document.getElementById('viewRecipeImg').src = this.dataset.img;
-        document.getElementById('viewRecipeType').textContent = this.dataset.type;
-        document.getElementById('viewRecipeDiff').textContent = this.dataset.diff;
-        document.getElementById('viewRecipeTime').textContent = this.dataset.time + ' minutos';
-        document.getElementById('viewRecipeServings').textContent = this.dataset.servings + ' personas';
-        document.getElementById('viewRecipeInstructions').textContent = this.dataset.instructions;
+document.addEventListener('DOMContentLoaded', function() {
+    const modalElement = document.getElementById('viewRecipeModal');
+    if (!modalElement) return;
 
-        const ingList = document.getElementById('viewRecipeIngredientsList');
-        ingList.innerHTML = '';
-        const rawIng = this.dataset.ingredients.split('\n');
-        rawIng.forEach(line => {
-            if (line.trim().length > 0) {
-                const li = document.createElement('li');
-                li.className = 'list-group-item px-0 py-1 bg-transparent';
-                li.innerHTML = '<i class="bi bi-check2 text-success me-2"></i>' + line.trim();
-                ingList.appendChild(li);
+    const viewRecipeModal = new bootstrap.Modal(modalElement);
+    document.querySelectorAll('.view-recipe-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('viewRecipeTitle').textContent = this.dataset.title;
+            document.getElementById('viewRecipeDesc').textContent = this.dataset.desc;
+            document.getElementById('viewRecipeImg').src = this.dataset.img;
+            document.getElementById('viewRecipeType').textContent = this.dataset.type;
+            document.getElementById('viewRecipeDiff').textContent = this.dataset.diff;
+            document.getElementById('viewRecipeTime').textContent = this.dataset.time + ' minutos';
+            document.getElementById('viewRecipeServings').textContent = this.dataset.servings + ' personas';
+            document.getElementById('viewRecipeInstructions').textContent = this.dataset.instructions;
+
+            const ingList = document.getElementById('viewRecipeIngredientsList');
+            if (ingList) {
+                ingList.innerHTML = '';
+                const rawIng = (this.dataset.ingredients || '').split('\n');
+                rawIng.forEach(line => {
+                    if (line.trim().length > 0) {
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item px-0 py-1 bg-transparent';
+                        li.innerHTML = '<i class="bi bi-check2 text-success me-2"></i>' + line.trim();
+                        ingList.appendChild(li);
+                    }
+                });
             }
-        });
 
-        viewRecipeModal.show();
+            viewRecipeModal.show();
+        });
     });
 });
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
+

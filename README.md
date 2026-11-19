@@ -151,3 +151,4 @@ Cada ejercicio cuenta con su propia estructura independiente y desacoplada:
     - Controles de Iniciar, Pausar, Reanudar y Reiniciar.
     - Registro de vueltas / tiempos parciales con detección automática de vuelta más rápida (verde) y más lenta (rojo).
     - Exportación de las vueltas registradas a archivo CSV y guardado en base de datos.
+

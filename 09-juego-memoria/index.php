@@ -4,3 +4,4 @@ require_once __DIR__ . '/controllers/GameController.php';
 
 $controller = new GameController();
 $controller->handleRequest();
+

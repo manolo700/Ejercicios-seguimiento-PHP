@@ -34,3 +34,4 @@ class TipController {
         require __DIR__ . '/../views/tip_view.php';
     }
 }
+

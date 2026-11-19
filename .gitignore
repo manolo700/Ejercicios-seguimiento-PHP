@@ -9,7 +9,10 @@ Desktop.ini
 *.sublime-project
 *.sublime-workspace
 
-# Local SQLite databases (created automatically by the application models)
+# Local SQLite databases (auto-created by PHP Models with seed data)
+*.sqlite
+*.sqlite3
+*.db
 *.sqlite-journal
 *.sqlite-wal
 *.sqlite-shm

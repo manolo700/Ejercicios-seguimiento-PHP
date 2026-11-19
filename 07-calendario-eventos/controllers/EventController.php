@@ -1,4 +1,8 @@
 <?php
+/**
+ * Event Controller
+ * Coordinates calendar requests, date calculations, and CRUD operations.
+ */
 require_once __DIR__ . '/../models/Event.php';
 
 class EventController {
@@ -29,11 +33,13 @@ class EventController {
         $year = isset($_GET['year']) ? (int)$_GET['year'] : (int)date('Y');
         $month = isset($_GET['month']) ? (int)$_GET['month'] : (int)date('m');
 
-        if ($month < 1) {
-            $month = 12;
+        // Normalize year and month boundaries
+        while ($month < 1) {
+            $month += 12;
             $year--;
-        } elseif ($month > 12) {
-            $month = 1;
+        }
+        while ($month > 12) {
+            $month -= 12;
             $year++;
         }
 
@@ -66,11 +72,11 @@ class EventController {
     private function save(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-            $date = $_POST['event_date'] ?? date('Y-m-d');
+            $eventDate = $_POST['event_date'] ?? date('Y-m-d');
             $data = [
                 'title' => $_POST['title'] ?? '',
                 'description' => $_POST['description'] ?? '',
-                'event_date' => $date,
+                'event_date' => $eventDate,
                 'start_time' => $_POST['start_time'] ?? '09:00',
                 'end_time' => $_POST['end_time'] ?? '',
                 'category' => $_POST['category'] ?? 'General',
@@ -85,10 +91,10 @@ class EventController {
                 $this->model->create($data);
             }
 
-            $dateParts = explode('-', $date);
-            $y = $dateParts[0] ?? date('Y');
-            $m = $dateParts[1] ?? date('m');
-            header("Location: index.php?year={$y}&month={$m}");
+            $dateParts = explode('-', $eventDate);
+            $year = $dateParts[0] ?? date('Y');
+            $month = $dateParts[1] ?? date('m');
+            header("Location: index.php?year={$year}&month={$month}");
             exit;
         }
         header('Location: index.php');

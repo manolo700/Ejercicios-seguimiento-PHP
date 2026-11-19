@@ -1,16 +1,16 @@
 <?php
-$pageTitle = '07 - Calendario de Eventos';
+$pageTitle = '07 - Event Calendar';
 $activeExercise = 7;
 $depth = 1;
 require __DIR__ . '/../../shared/header.php';
 
-$meses = [
+$monthNames = [
     1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
     5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
     9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
 ];
 
-$diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+$daysOfWeek = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 $todayDate = date('Y-m-d');
 ?>
 
@@ -21,7 +21,7 @@ $todayDate = date('Y-m-d');
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div>
                     <span class="mvc-badge mb-2 d-inline-block">
-                        <i class="bi bi-diagram-3-fill me-1"></i> Arquitectura MVC (Model: Event, View: event_view, Controller: EventController)
+                        <i class="bi bi-diagram-3-fill me-1"></i> MVC Architecture (Model: Event, View: event_view, Controller: EventController)
                     </span>
                     <h2 class="h3 fw-bold mb-1">
                         <i class="bi bi-calendar-event text-primary me-2"></i>Calendario Interactivo de Eventos
@@ -51,17 +51,17 @@ $todayDate = date('Y-m-d');
                 <span class="badge bg-warning text-dark"><?= count($reminders) ?> alertas</span>
             </div>
             <div class="row g-2">
-                <?php foreach ($reminders as $rem): ?>
+                <?php foreach ($reminders as $reminder): ?>
                     <div class="col-md-6 col-lg-4">
                         <div class="p-2 bg-white rounded-3 border small">
                             <div class="fw-bold text-dark d-flex justify-content-between">
-                                <span><?= htmlspecialchars($rem['title']) ?></span>
-                                <span class="badge bg-light text-muted border"><?= date('d/m', strtotime($rem['event_date'])) ?></span>
+                                <span><?= htmlspecialchars($reminder['title']) ?></span>
+                                <span class="badge bg-light text-muted border"><?= date('d/m', strtotime($reminder['event_date'])) ?></span>
                             </div>
                             <div class="text-muted mt-1">
-                                <i class="bi bi-clock me-1"></i><?= $rem['start_time'] ?> hrs
-                                <?php if (!empty($rem['reminder_note'])): ?>
-                                    &bull; <?= htmlspecialchars($rem['reminder_note']) ?>
+                                <i class="bi bi-clock me-1"></i><?= htmlspecialchars($reminder['start_time']) ?> hrs
+                                <?php if (!empty($reminder['reminder_note'])): ?>
+                                    &bull; <?= htmlspecialchars($reminder['reminder_note']) ?>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -86,7 +86,7 @@ $todayDate = date('Y-m-d');
                 </a>
             </div>
             <h4 class="mb-0 fw-bold text-dark">
-                <?= $meses[$month] ?> de <?= $year ?>
+                <?= $monthNames[$month] ?> de <?= $year ?>
             </h4>
             <div class="d-flex align-items-center gap-2">
                 <span class="badge bg-primary-subtle text-primary border px-3 py-2">
@@ -101,80 +101,71 @@ $todayDate = date('Y-m-d');
                 <table class="table table-bordered mb-0 calendar-table" style="min-width: 700px; table-layout: fixed;">
                     <thead>
                         <tr class="bg-light text-center small text-uppercase text-muted">
-                            <?php foreach ($diasSemana as $dia): ?>
-                                <th class="py-2" style="width: 14.28%;"><?= $dia ?></th>
+                            <?php foreach ($daysOfWeek as $dayName): ?>
+                                <th class="py-2" style="width: 14.28%;"><?= $dayName ?></th>
                             <?php endforeach; ?>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+                            $totalCells = ($firstDayOfWeek - 1) + $daysInMonth;
+                            $totalRows = (int)ceil($totalCells / 7);
+                            $totalSlots = $totalRows * 7;
                             $currentDay = 1;
-                            $dayOfWeekCounter = 1;
-                            echo '<tr>';
 
-                            // Empty cells before the first day of the month
-                            for ($i = 1; $i < $firstDayOfWeek; $i++) {
-                                echo '<td class="bg-light opacity-50 p-2" style="height: 110px;"></td>';
-                                $dayOfWeekCounter++;
-                            }
-
-                            // Days of current month
-                            while ($currentDay <= $daysInMonth) {
-                                if ($dayOfWeekCounter > 7) {
-                                    echo '</tr><tr>';
-                                    $dayOfWeekCounter = 1;
+                            for ($slot = 1; $slot <= $totalSlots; $slot++) {
+                                if (($slot - 1) % 7 === 0) {
+                                    echo '<tr>';
                                 }
 
-                                $fullDateStr = sprintf('%04d-%02d-%02d', $year, $month, $currentDay);
-                                $isToday = ($fullDateStr === $todayDate);
-                                $dayEvents = $eventsByDay[$currentDay] ?? [];
+                                if ($slot < $firstDayOfWeek || $currentDay > $daysInMonth) {
+                                    echo '<td class="bg-light opacity-50 p-2" style="height: 110px;"></td>';
+                                } else {
+                                    $dateString = sprintf('%04d-%02d-%02d', $year, $month, $currentDay);
+                                    $isToday = ($dateString === $todayDate);
+                                    $dayEvents = $eventsByDay[$currentDay] ?? [];
 
-                                echo '<td class="p-2 position-relative align-top ' . ($isToday ? 'bg-primary-subtle bg-opacity-10 border-primary' : '') . '" style="height: 110px;">';
-                                
-                                // Day Header
-                                echo '<div class="d-flex justify-content-between align-items-center mb-1">';
-                                echo '<span class="badge ' . ($isToday ? 'bg-primary text-white' : 'text-dark fw-bold') . ' rounded-circle" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem;">' . $currentDay . '</span>';
-                                echo '<button type="button" class="btn btn-link btn-sm text-decoration-none text-muted p-0 add-to-day-btn" data-date="' . $fullDateStr . '" title="Agregar evento en este día"><i class="bi bi-plus-circle"></i></button>';
-                                echo '</div>';
+                                    echo '<td class="p-2 position-relative align-top ' . ($isToday ? 'bg-primary-subtle bg-opacity-10 border-primary' : '') . '" style="height: 110px;">';
+                                    
+                                    // Day Header
+                                    echo '<div class="d-flex justify-content-between align-items-center mb-1">';
+                                    echo '<span class="badge ' . ($isToday ? 'bg-primary text-white' : 'text-dark fw-bold') . ' rounded-circle" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem;">' . $currentDay . '</span>';
+                                    echo '<button type="button" class="btn btn-link btn-sm text-decoration-none text-muted p-0 add-to-day-btn" data-date="' . $dateString . '" title="Agregar evento en este día"><i class="bi bi-plus-circle"></i></button>';
+                                    echo '</div>';
 
-                                // Events inside this day
-                                echo '<div class="day-events-wrapper d-flex flex-column gap-1" style="max-height: 75px; overflow-y: auto;">';
-                                foreach ($dayEvents as $ev) {
-                                    $evColor = htmlspecialchars($ev['color']);
-                                    echo '<div class="event-pill p-1 px-2 rounded small text-white text-truncate cursor-pointer" 
-                                               style="background-color: ' . $evColor . '; font-size: 0.72rem; cursor: pointer;"
-                                               data-id="' . $ev['id'] . '"
-                                               data-title="' . htmlspecialchars($ev['title']) . '"
-                                               data-desc="' . htmlspecialchars($ev['description'] ?? '') . '"
-                                               data-date="' . $ev['event_date'] . '"
-                                               data-start="' . $ev['start_time'] . '"
-                                               data-end="' . $ev['end_time'] . '"
-                                               data-cat="' . htmlspecialchars($ev['category']) . '"
-                                               data-color="' . $evColor . '"
-                                               data-reminder="' . $ev['has_reminder'] . '"
-                                               data-remindernote="' . htmlspecialchars($ev['reminder_note'] ?? '') . '"
-                                               title="' . htmlspecialchars($ev['title']) . ' (' . $ev['start_time'] . ')">';
-                                    echo '<span class="fw-semibold">' . $ev['start_time'] . '</span> ' . htmlspecialchars($ev['title']);
-                                    if ($ev['has_reminder']) {
-                                        echo ' <i class="bi bi-bell-fill ms-1" style="font-size: 0.65rem;"></i>';
+                                    // Events inside this day
+                                    echo '<div class="day-events-wrapper d-flex flex-column gap-1" style="max-height: 75px; overflow-y: auto;">';
+                                    foreach ($dayEvents as $event) {
+                                        $eventColor = htmlspecialchars($event['color']);
+                                        echo '<div class="event-pill p-1 px-2 rounded small text-white text-truncate cursor-pointer" 
+                                                   style="background-color: ' . $eventColor . '; font-size: 0.72rem; cursor: pointer;"
+                                                   data-id="' . $event['id'] . '"
+                                                   data-title="' . htmlspecialchars($event['title']) . '"
+                                                   data-desc="' . htmlspecialchars($event['description'] ?? '') . '"
+                                                   data-date="' . $event['event_date'] . '"
+                                                   data-start="' . $event['start_time'] . '"
+                                                   data-end="' . $event['end_time'] . '"
+                                                   data-cat="' . htmlspecialchars($event['category']) . '"
+                                                   data-color="' . $eventColor . '"
+                                                   data-reminder="' . $event['has_reminder'] . '"
+                                                   data-remindernote="' . htmlspecialchars($event['reminder_note'] ?? '') . '"
+                                                   title="' . htmlspecialchars($event['title']) . ' (' . $event['start_time'] . ')">';
+                                        echo '<span class="fw-semibold">' . $event['start_time'] . '</span> ' . htmlspecialchars($event['title']);
+                                        if ($event['has_reminder']) {
+                                            echo ' <i class="bi bi-bell-fill ms-1" style="font-size: 0.65rem;"></i>';
+                                        }
+                                        echo '</div>';
                                     }
                                     echo '</div>';
+                                    echo '</td>';
+
+                                    $currentDay++;
                                 }
-                                echo '</div>';
 
-                                echo '</td>';
-
-                                $currentDay++;
-                                $dayOfWeekCounter++;
+                                if ($slot % 7 === 0) {
+                                    echo '</tr>';
+                                }
                             }
-
-                            // Empty cells at the end of the month
-                            while ($dayOfWeekCounter <= 7) {
-                                echo '<td class="bg-light opacity-50 p-2" style="height: 110px;"></td>';
-                                $dayOfWeekCounter++;
-                            }
-
-                            echo '</tr>';
                         ?>
                     </tbody>
                 </table>
@@ -260,67 +251,75 @@ $todayDate = date('Y-m-d');
 </div>
 
 <script>
-const eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
-const eventModalTitle = document.getElementById('eventModalTitle');
-const eventId = document.getElementById('eventId');
-const eventTitle = document.getElementById('eventTitle');
-const eventDesc = document.getElementById('eventDesc');
-const eventDate = document.getElementById('eventDate');
-const eventStart = document.getElementById('eventStart');
-const eventEnd = document.getElementById('eventEnd');
-const eventCat = document.getElementById('eventCat');
-const eventColor = document.getElementById('eventColor');
-const eventHasReminder = document.getElementById('eventHasReminder');
-const eventReminderNote = document.getElementById('eventReminderNote');
-const btnDeleteEvent = document.getElementById('btnDeleteEvent');
+document.addEventListener('DOMContentLoaded', function() {
+    const modalElement = document.getElementById('eventModal');
+    if (!modalElement) return;
 
-function resetModal(defaultDate = '<?= date('Y-m-d') ?>') {
-    eventModalTitle.innerHTML = '<i class="bi bi-calendar-plus text-primary me-2"></i>Nuevo Evento';
-    eventId.value = 0;
-    eventTitle.value = '';
-    eventDesc.value = '';
-    eventDate.value = defaultDate;
-    eventStart.value = '09:00';
-    eventEnd.value = '';
-    eventCat.value = 'Trabajo';
-    eventColor.value = '#4f46e5';
-    eventHasReminder.checked = false;
-    eventReminderNote.value = '';
-    btnDeleteEvent.style.display = 'none';
-}
+    const eventModal = new bootstrap.Modal(modalElement);
+    const eventModalTitle = document.getElementById('eventModalTitle');
+    const eventId = document.getElementById('eventId');
+    const eventTitle = document.getElementById('eventTitle');
+    const eventDesc = document.getElementById('eventDesc');
+    const eventDate = document.getElementById('eventDate');
+    const eventStart = document.getElementById('eventStart');
+    const eventEnd = document.getElementById('eventEnd');
+    const eventCat = document.getElementById('eventCat');
+    const eventColor = document.getElementById('eventColor');
+    const eventHasReminder = document.getElementById('eventHasReminder');
+    const eventReminderNote = document.getElementById('eventReminderNote');
+    const btnDeleteEvent = document.getElementById('btnDeleteEvent');
 
-document.getElementById('btnNewEvent').addEventListener('click', () => {
-    resetModal();
-    eventModal.show();
-});
+    function resetModal(defaultDate = '<?= date('Y-m-d') ?>') {
+        eventModalTitle.innerHTML = '<i class="bi bi-calendar-plus text-primary me-2"></i>Nuevo Evento';
+        eventId.value = 0;
+        eventTitle.value = '';
+        eventDesc.value = '';
+        eventDate.value = defaultDate;
+        eventStart.value = '09:00';
+        eventEnd.value = '';
+        eventCat.value = 'Trabajo';
+        eventColor.value = '#4f46e5';
+        eventHasReminder.checked = false;
+        eventReminderNote.value = '';
+        btnDeleteEvent.style.display = 'none';
+    }
 
-document.querySelectorAll('.add-to-day-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        resetModal(this.dataset.date);
-        eventModal.show();
+    const btnNew = document.getElementById('btnNewEvent');
+    if (btnNew) {
+        btnNew.addEventListener('click', function() {
+            resetModal();
+            eventModal.show();
+        });
+    }
+
+    document.querySelectorAll('.add-to-day-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            resetModal(this.dataset.date);
+            eventModal.show();
+        });
     });
-});
 
-document.querySelectorAll('.event-pill').forEach(pill => {
-    pill.addEventListener('click', function() {
-        eventModalTitle.innerHTML = '<i class="bi bi-pencil-square text-primary me-2"></i>Editar Evento';
-        const id = this.dataset.id;
-        eventId.value = id;
-        eventTitle.value = this.dataset.title;
-        eventDesc.value = this.dataset.desc;
-        eventDate.value = this.dataset.date;
-        eventStart.value = this.dataset.start;
-        eventEnd.value = this.dataset.end;
-        eventCat.value = this.dataset.cat;
-        eventColor.value = this.dataset.color;
-        eventHasReminder.checked = (this.dataset.reminder === '1');
-        eventReminderNote.value = this.dataset.remindernote;
-        
-        btnDeleteEvent.href = `index.php?action=delete&id=${id}&year=<?= $year ?>&month=<?= $month ?>`;
-        btnDeleteEvent.style.display = 'inline-block';
+    document.querySelectorAll('.event-pill').forEach(pill => {
+        pill.addEventListener('click', function() {
+            eventModalTitle.innerHTML = '<i class="bi bi-pencil-square text-primary me-2"></i>Editar Evento';
+            const id = this.dataset.id;
+            eventId.value = id;
+            eventTitle.value = this.dataset.title;
+            eventDesc.value = this.dataset.desc;
+            eventDate.value = this.dataset.date;
+            eventStart.value = this.dataset.start;
+            eventEnd.value = this.dataset.end;
+            eventCat.value = this.dataset.cat;
+            eventColor.value = this.dataset.color;
+            eventHasReminder.checked = (this.dataset.reminder === '1');
+            eventReminderNote.value = this.dataset.remindernote;
+            
+            btnDeleteEvent.href = `index.php?action=delete&id=${id}&year=<?= $year ?>&month=<?= $month ?>`;
+            btnDeleteEvent.style.display = 'inline-block';
 
-        eventModal.show();
+            eventModal.show();
+        });
     });
 });
 </script>

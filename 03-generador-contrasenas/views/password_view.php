@@ -169,44 +169,51 @@ $opts = $result['options'];
 </div>
 
 <script>
-const lengthSlider = document.getElementById('lengthSlider');
-const lengthDisplay = document.getElementById('lengthDisplay');
+document.addEventListener('DOMContentLoaded', function() {
+    const lengthSlider = document.getElementById('lengthSlider');
+    const lengthDisplay = document.getElementById('lengthDisplay');
 
-lengthSlider.addEventListener('input', function() {
-    lengthDisplay.textContent = this.value + ' caracteres';
-});
+    if (lengthSlider && lengthDisplay) {
+        lengthSlider.addEventListener('input', function() {
+            lengthDisplay.textContent = this.value + ' caracteres';
+        });
+    }
 
-// Copy primary password
-const btnCopyMain = document.getElementById('btnCopyMain');
-const primaryPassword = document.getElementById('primaryPassword');
-const btnCopyText = document.getElementById('btnCopyText');
+    // Copy primary password
+    const btnCopyMain = document.getElementById('btnCopyMain');
+    const primaryPassword = document.getElementById('primaryPassword');
+    const btnCopyText = document.getElementById('btnCopyText');
 
-btnCopyMain.addEventListener('click', function() {
-    navigator.clipboard.writeText(primaryPassword.value).then(() => {
-        btnCopyText.textContent = '¡Copiado!';
-        btnCopyMain.classList.replace('btn-warning', 'btn-success');
-        setTimeout(() => {
-            btnCopyText.textContent = 'Copiar';
-            btnCopyMain.classList.replace('btn-success', 'btn-warning');
-        }, 2000);
-    });
-});
+    if (btnCopyMain && primaryPassword && btnCopyText) {
+        btnCopyMain.addEventListener('click', function() {
+            navigator.clipboard.writeText(primaryPassword.value).then(() => {
+                btnCopyText.textContent = '¡Copiado!';
+                btnCopyMain.classList.replace('btn-warning', 'btn-success');
+                setTimeout(() => {
+                    btnCopyText.textContent = 'Copiar';
+                    btnCopyMain.classList.replace('btn-success', 'btn-warning');
+                }, 2000);
+            });
+        });
+    }
 
-// Copy alternatives
-document.querySelectorAll('.copy-alt-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const text = this.dataset.password;
-        navigator.clipboard.writeText(text).then(() => {
-            const original = this.innerHTML;
-            this.innerHTML = '<i class="bi bi-check2"></i> ¡Listo!';
-            this.classList.replace('btn-outline-secondary', 'btn-success');
-            setTimeout(() => {
-                this.innerHTML = original;
-                this.classList.replace('btn-success', 'btn-outline-secondary');
-            }, 1800);
+    // Copy alternatives
+    document.querySelectorAll('.copy-alt-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const text = this.dataset.password;
+            navigator.clipboard.writeText(text).then(() => {
+                const original = this.innerHTML;
+                this.innerHTML = '<i class="bi bi-check2"></i> ¡Listo!';
+                this.classList.replace('btn-outline-secondary', 'btn-success');
+                setTimeout(() => {
+                    this.innerHTML = original;
+                    this.classList.replace('btn-success', 'btn-outline-secondary');
+                }, 1800);
+            });
         });
     });
 });
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
+

@@ -117,3 +117,4 @@ class Booking {
         return $row ?: null;
     }
 }
+

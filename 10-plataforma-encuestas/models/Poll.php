@@ -153,3 +153,4 @@ class Poll {
         return $stmt->execute([':id' => $id]);
     }
 }
+

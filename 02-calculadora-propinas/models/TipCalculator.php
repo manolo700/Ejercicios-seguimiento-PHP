@@ -82,3 +82,4 @@ class TipCalculator {
         $this->db->exec("DELETE FROM tip_history");
     }
 }
+

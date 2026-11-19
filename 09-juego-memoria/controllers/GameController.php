@@ -1,4 +1,8 @@
 <?php
+/**
+ * Game Controller
+ * Handles memory game initialization, difficulty switching, and score recording.
+ */
 require_once __DIR__ . '/../models/MemoryGame.php';
 
 class GameController {
@@ -38,21 +42,21 @@ class GameController {
 
     private function saveScore(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['player_name'] ?? 'Jugador';
-            $diff = $_POST['difficulty'] ?? 'medio';
+            $playerName = $_POST['player_name'] ?? 'Jugador';
+            $difficulty = $_POST['difficulty'] ?? 'medio';
             $moves = (int)($_POST['moves'] ?? 0);
-            $time = (int)($_POST['time_seconds'] ?? 0);
+            $timeSeconds = (int)($_POST['time_seconds'] ?? 0);
             $score = (int)($_POST['score'] ?? 0);
 
-            $this->model->saveScore($name, $diff, $moves, $time, $score);
+            $this->model->saveScore($playerName, $difficulty, $moves, $timeSeconds, $score);
 
-            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                 header('Content-Type: application/json');
                 echo json_encode(['success' => true]);
                 exit;
             }
 
-            header("Location: index.php?difficulty=" . urlencode($diff));
+            header("Location: index.php?difficulty=" . urlencode($difficulty));
             exit;
         }
     }

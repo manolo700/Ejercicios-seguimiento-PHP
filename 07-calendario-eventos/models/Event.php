@@ -1,4 +1,8 @@
 <?php
+/**
+ * Event Model
+ * Handles database operations for calendar events and reminders.
+ */
 class Event {
     private PDO $db;
 
@@ -7,10 +11,10 @@ class Event {
         $this->db = new PDO('sqlite:' . $dbPath);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        $this->initTable();
+        $this->initializeTable();
     }
 
-    private function initTable(): void {
+    private function initializeTable(): void {
         $sql = "CREATE TABLE IF NOT EXISTS events (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -26,7 +30,7 @@ class Event {
         )";
         $this->db->exec($sql);
 
-        // Preload sample events if empty
+        // Preload sample events if database is newly initialized
         $count = (int)$this->db->query("SELECT COUNT(*) FROM events")->fetchColumn();
         if ($count === 0) {
             $today = date('Y-m-d');
@@ -34,32 +38,32 @@ class Event {
             $nextWeek = date('Y-m-d', strtotime('+5 days'));
 
             $this->create([
-                'title' => 'Entrega de Proyecto Web PHP',
-                'description' => 'Revisión final de código y documentación en GitHub.',
+                'title' => 'Web Architecture Final Delivery',
+                'description' => 'Complete review of PHP MVC architecture and GitHub upload.',
                 'event_date' => $today,
                 'start_time' => '18:00',
                 'end_time' => '20:00',
                 'category' => 'Académico',
                 'color' => '#dc2626',
                 'has_reminder' => 1,
-                'reminder_note' => 'Subir repositorio con el comando git push origin main'
+                'reminder_note' => 'Verify all tests and run git status before push'
             ]);
 
             $this->create([
-                'title' => 'Reunión de Equipo / Sprint',
-                'description' => 'Planificación semanal y avances.',
+                'title' => 'Weekly Sprint Planning',
+                'description' => 'Coordination meeting with backend team.',
                 'event_date' => $tomorrow,
                 'start_time' => '10:00',
                 'end_time' => '11:30',
                 'category' => 'Trabajo',
                 'color' => '#2563eb',
                 'has_reminder' => 1,
-                'reminder_note' => 'Tener listos los diagramas de arquitectura MVC'
+                'reminder_note' => 'Prepare architecture diagrams'
             ]);
 
             $this->create([
-                'title' => 'Taller de Seguridad Web',
-                'description' => 'Mejores prácticas en PHP 8.2 y validación de entradas.',
+                'title' => 'Web Security Workshop',
+                'description' => 'Modern PHP best practices, input sanitization and PDO.',
                 'event_date' => $nextWeek,
                 'start_time' => '15:00',
                 'end_time' => '17:00',
@@ -71,6 +75,13 @@ class Event {
         }
     }
 
+    /**
+     * Retrieve all events for a given month and year, grouped by day.
+     *
+     * @param int $year
+     * @param int $month
+     * @return array<int, array>
+     */
     public function getEventsByMonth(int $year, int $month): array {
         $start = sprintf('%04d-%02d-01', $year, $month);
         $end = date('Y-m-t', strtotime($start));
@@ -79,14 +90,17 @@ class Event {
         $stmt->execute([':start' => $start, ':end' => $end]);
         $rows = $stmt->fetchAll();
 
-        $byDay = [];
-        foreach ($rows as $ev) {
-            $day = (int)date('j', strtotime($ev['event_date']));
-            $byDay[$day][] = $ev;
+        $eventsByDay = [];
+        foreach ($rows as $event) {
+            $day = (int)date('j', strtotime($event['event_date']));
+            $eventsByDay[$day][] = $event;
         }
-        return $byDay;
+        return $eventsByDay;
     }
 
+    /**
+     * Retrieve an event by its ID.
+     */
     public function getById(int $id): ?array {
         $stmt = $this->db->prepare("SELECT * FROM events WHERE id = :id");
         $stmt->execute([':id' => $id]);
@@ -94,24 +108,41 @@ class Event {
         return $row ?: null;
     }
 
+    /**
+     * Create a new event.
+     */
     public function create(array $data): bool {
+        $title = trim($data['title'] ?? '');
+        if ($title === '') {
+            return false;
+        }
+
         $stmt = $this->db->prepare("INSERT INTO events 
             (title, description, event_date, start_time, end_time, category, color, has_reminder, reminder_note)
             VALUES (:title, :description, :date, :start_time, :end_time, :category, :color, :has_reminder, :reminder_note)");
+
         return $stmt->execute([
-            ':title' => trim($data['title']),
+            ':title' => $title,
             ':description' => trim($data['description'] ?? ''),
-            ':date' => $data['event_date'],
+            ':date' => $data['event_date'] ?? date('Y-m-d'),
             ':start_time' => $data['start_time'] ?? '09:00',
             ':end_time' => $data['end_time'] ?? '',
-            ':category' => $data['category'] ?? 'general',
+            ':category' => $data['category'] ?? 'General',
             ':color' => $data['color'] ?? '#4f46e5',
             ':has_reminder' => !empty($data['has_reminder']) ? 1 : 0,
             ':reminder_note' => trim($data['reminder_note'] ?? '')
         ]);
     }
 
+    /**
+     * Update an existing event.
+     */
     public function update(int $id, array $data): bool {
+        $title = trim($data['title'] ?? '');
+        if ($title === '') {
+            return false;
+        }
+
         $stmt = $this->db->prepare("UPDATE events SET 
             title = :title,
             description = :description,
@@ -123,25 +154,32 @@ class Event {
             has_reminder = :has_reminder,
             reminder_note = :reminder_note
             WHERE id = :id");
+
         return $stmt->execute([
             ':id' => $id,
-            ':title' => trim($data['title']),
+            ':title' => $title,
             ':description' => trim($data['description'] ?? ''),
-            ':date' => $data['event_date'],
-            ':start_time' => $data['start_time'],
+            ':date' => $data['event_date'] ?? date('Y-m-d'),
+            ':start_time' => $data['start_time'] ?? '09:00',
             ':end_time' => $data['end_time'] ?? '',
-            ':category' => $data['category'] ?? 'general',
+            ':category' => $data['category'] ?? 'General',
             ':color' => $data['color'] ?? '#4f46e5',
             ':has_reminder' => !empty($data['has_reminder']) ? 1 : 0,
             ':reminder_note' => trim($data['reminder_note'] ?? '')
         ]);
     }
 
+    /**
+     * Delete an event by ID.
+     */
     public function delete(int $id): bool {
         $stmt = $this->db->prepare("DELETE FROM events WHERE id = :id");
         return $stmt->execute([':id' => $id]);
     }
 
+    /**
+     * Get upcoming reminders for today or next 7 days.
+     */
     public function getUpcomingReminders(): array {
         $today = date('Y-m-d');
         $future = date('Y-m-d', strtotime('+7 days'));

@@ -293,3 +293,4 @@ $exercisesList = [
 </div>
 
 <?php require __DIR__ . '/shared/footer.php'; ?>
+

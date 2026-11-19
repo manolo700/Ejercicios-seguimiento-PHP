@@ -193,37 +193,46 @@ require __DIR__ . '/../../shared/header.php';
 </div>
 
 <script>
-const noteModal = new bootstrap.Modal(document.getElementById('noteModal'));
-const modalTitle = document.getElementById('modalTitle');
-const noteId = document.getElementById('noteId');
-const noteTitle = document.getElementById('noteTitle');
-const noteContent = document.getElementById('noteContent');
-const noteCategory = document.getElementById('noteCategory');
-const noteColor = document.getElementById('noteColor');
-const notePinned = document.getElementById('notePinned');
+document.addEventListener('DOMContentLoaded', function() {
+    const modalElement = document.getElementById('noteModal');
+    if (!modalElement) return;
 
-document.getElementById('btnNewNote').addEventListener('click', function() {
-    modalTitle.innerHTML = '<i class="bi bi-journal-plus text-primary me-2"></i>Nueva Nota';
-    noteId.value = 0;
-    noteTitle.value = '';
-    noteContent.value = '';
-    noteCategory.value = 'Personal';
-    noteColor.value = 'yellow';
-    notePinned.checked = false;
-});
+    const noteModal = new bootstrap.Modal(modalElement);
+    const modalTitle = document.getElementById('modalTitle');
+    const noteId = document.getElementById('noteId');
+    const noteTitle = document.getElementById('noteTitle');
+    const noteContent = document.getElementById('noteContent');
+    const noteCategory = document.getElementById('noteCategory');
+    const noteColor = document.getElementById('noteColor');
+    const notePinned = document.getElementById('notePinned');
 
-document.querySelectorAll('.edit-note-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        modalTitle.innerHTML = '<i class="bi bi-pencil-square text-primary me-2"></i>Editar Nota';
-        noteId.value = this.dataset.id;
-        noteTitle.value = this.dataset.title;
-        noteContent.value = this.dataset.content;
-        noteCategory.value = this.dataset.category;
-        noteColor.value = this.dataset.color;
-        notePinned.checked = this.dataset.pinned === '1';
-        noteModal.show();
+    const btnNew = document.getElementById('btnNewNote');
+    if (btnNew) {
+        btnNew.addEventListener('click', function() {
+            modalTitle.innerHTML = '<i class="bi bi-journal-plus text-primary me-2"></i>Nueva Nota';
+            noteId.value = 0;
+            noteTitle.value = '';
+            noteContent.value = '';
+            noteCategory.value = 'Personal';
+            noteColor.value = 'yellow';
+            notePinned.checked = false;
+        });
+    }
+
+    document.querySelectorAll('.edit-note-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            modalTitle.innerHTML = '<i class="bi bi-pencil-square text-primary me-2"></i>Editar Nota';
+            noteId.value = this.dataset.id;
+            noteTitle.value = this.dataset.title;
+            noteContent.value = this.dataset.content;
+            noteCategory.value = this.dataset.category;
+            noteColor.value = this.dataset.color;
+            notePinned.checked = this.dataset.pinned === '1';
+            noteModal.show();
+        });
     });
 });
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
+

@@ -4,3 +4,4 @@ require_once __DIR__ . '/controllers/PollController.php';
 
 $controller = new PollController();
 $controller->handleRequest();
+

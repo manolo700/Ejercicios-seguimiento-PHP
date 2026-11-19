@@ -1,4 +1,8 @@
 <?php
+/**
+ * MemoryGame Model
+ * Handles card generation, scoring logic, and leaderboard database operations.
+ */
 class MemoryGame {
     private PDO $db;
 
@@ -7,14 +11,14 @@ class MemoryGame {
         ['icon' => '🍔', 'name' => 'Burger', 'color' => '#eab308'],
         ['icon' => '🌮', 'name' => 'Taco', 'color' => '#ca8a04'],
         ['icon' => '🍣', 'name' => 'Sushi', 'color' => '#ef4444'],
-        ['icon' => '🍩', 'name' => 'Dona', 'color' => '#ec4899'],
-        ['icon' => '🥑', 'name' => 'Aguacate', 'color' => '#22c55e'],
-        ['icon' => '☕', 'name' => 'Café', 'color' => '#78350f'],
-        ['icon' => '🍦', 'name' => 'Helado', 'color' => '#06b6d4'],
-        ['icon' => '🍓', 'name' => 'Fresa', 'color' => '#e11d48'],
-        ['icon' => '🍉', 'name' => 'Sandía', 'color' => '#10b981'],
-        ['icon' => '🍟', 'name' => 'Papas', 'color' => '#f59e0b'],
-        ['icon' => '🍰', 'name' => 'Pastel', 'color' => '#8b5cf6']
+        ['icon' => '🍩', 'name' => 'Donut', 'color' => '#ec4899'],
+        ['icon' => '🥑', 'name' => 'Avocado', 'color' => '#22c55e'],
+        ['icon' => '☕', 'name' => 'Coffee', 'color' => '#78350f'],
+        ['icon' => '🍦', 'name' => 'Ice Cream', 'color' => '#06b6d4'],
+        ['icon' => '🍓', 'name' => 'Strawberry', 'color' => '#e11d48'],
+        ['icon' => '🍉', 'name' => 'Watermelon', 'color' => '#10b981'],
+        ['icon' => '🍟', 'name' => 'Fries', 'color' => '#f59e0b'],
+        ['icon' => '🍰', 'name' => 'Cake', 'color' => '#8b5cf6']
     ];
 
     public const LEVELS = [
@@ -28,10 +32,10 @@ class MemoryGame {
         $this->db = new PDO('sqlite:' . $dbPath);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        $this->initTable();
+        $this->initializeTable();
     }
 
-    private function initTable(): void {
+    private function initializeTable(): void {
         $sql = "CREATE TABLE IF NOT EXISTS high_scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             player_name TEXT NOT NULL,
@@ -43,7 +47,7 @@ class MemoryGame {
         )";
         $this->db->exec($sql);
 
-        // Preload sample leaderboard
+        // Preload sample leaderboard records if empty
         $count = (int)$this->db->query("SELECT COUNT(*) FROM high_scores")->fetchColumn();
         if ($count === 0) {
             $this->saveScore('Valeria', 'facil', 9, 22, 5320);
@@ -52,6 +56,12 @@ class MemoryGame {
         }
     }
 
+    /**
+     * Generate shuffled card deck for the specified difficulty level.
+     *
+     * @param string $difficulty
+     * @return array
+     */
     public function generateCards(string $difficulty): array {
         $level = self::LEVELS[$difficulty] ?? self::LEVELS['medio'];
         $numPairs = $level['pairs'];
@@ -60,7 +70,7 @@ class MemoryGame {
         $deck = [];
 
         foreach ($selectedIcons as $index => $item) {
-            // Card 1
+            // Card A
             $deck[] = [
                 'uid' => $index . '-a',
                 'pair_id' => $index,
@@ -68,7 +78,7 @@ class MemoryGame {
                 'name' => $item['name'],
                 'color' => $item['color']
             ];
-            // Card 2
+            // Card B
             $deck[] = [
                 'uid' => $index . '-b',
                 'pair_id' => $index,
@@ -78,27 +88,36 @@ class MemoryGame {
             ];
         }
 
-        // Shuffle deck
+        // Randomize deck order
         shuffle($deck);
         return $deck;
     }
 
-    public function saveScore(string $player, string $difficulty, int $moves, int $time, int $score): bool {
-        $player = trim($player);
-        if ($player === '') $player = 'Jugador Anónimo';
+    /**
+     * Save player score into high_scores table.
+     */
+    public function saveScore(string $playerName, string $difficulty, int $moves, int $timeSeconds, int $score): bool {
+        $playerName = trim($playerName);
+        if ($playerName === '') {
+            $playerName = 'Jugador Anónimo';
+        }
 
         $stmt = $this->db->prepare("INSERT INTO high_scores 
             (player_name, difficulty, moves, time_seconds, score) 
             VALUES (:player, :diff, :moves, :time, :score)");
+
         return $stmt->execute([
-            ':player' => $player,
+            ':player' => $playerName,
             ':diff' => $difficulty,
             ':moves' => $moves,
-            ':time' => $time,
+            ':time' => $timeSeconds,
             ':score' => $score
         ]);
     }
 
+    /**
+     * Retrieve leaderboard records sorted by highest score.
+     */
     public function getLeaderboard(string $difficulty = 'all', int $limit = 10): array {
         $sql = "SELECT * FROM high_scores";
         $params = [];
@@ -110,8 +129,8 @@ class MemoryGame {
 
         $sql .= " ORDER BY score DESC, time_seconds ASC, moves ASC LIMIT :limit";
         $stmt = $this->db->prepare($sql);
-        foreach ($params as $k => $v) {
-            $stmt->bindValue($k, $v);
+        foreach ($params as $paramKey => $paramVal) {
+            $stmt->bindValue($paramKey, $paramVal);
         }
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();

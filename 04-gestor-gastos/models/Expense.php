@@ -118,3 +118,4 @@ class Expense {
         return $stmt->fetchAll();
     }
 }
+

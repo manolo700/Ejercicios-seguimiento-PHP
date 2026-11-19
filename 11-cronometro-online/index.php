@@ -4,3 +4,4 @@ require_once __DIR__ . '/controllers/StopwatchController.php';
 
 $controller = new StopwatchController();
 $controller->handleRequest();
+

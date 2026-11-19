@@ -1,12 +1,12 @@
 <?php
-$pageTitle = '09 - Juego de Memoria';
+$pageTitle = '09 - Memory Game';
 $activeExercise = 9;
 $depth = 1;
 require __DIR__ . '/../../shared/header.php';
 ?>
 
 <style>
-/* 3D Flip Card Effect */
+/* 3D Flip Card Styles */
 .memory-grid {
     display: grid;
     gap: 12px;
@@ -16,6 +16,7 @@ require __DIR__ . '/../../shared/header.php';
     height: 110px;
     position: relative;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     user-select: none;
@@ -26,12 +27,14 @@ require __DIR__ . '/../../shared/header.php';
 .memory-card.matched {
     transform: rotateY(180deg);
     cursor: default;
+    pointer-events: none;
 }
 .card-face {
     position: absolute;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -62,7 +65,7 @@ require __DIR__ . '/../../shared/header.php';
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div>
                     <span class="mvc-badge mb-2 d-inline-block">
-                        <i class="bi bi-diagram-3-fill me-1"></i> Arquitectura MVC (Model: MemoryGame, View: game_view, Controller: GameController)
+                        <i class="bi bi-diagram-3-fill me-1"></i> MVC Architecture (Model: MemoryGame, View: game_view, Controller: GameController)
                     </span>
                     <h2 class="h3 fw-bold mb-1">
                         <i class="bi bi-grid-3x3-gap text-primary me-2"></i>Juego Clásico de Memoria
@@ -74,9 +77,9 @@ require __DIR__ . '/../../shared/header.php';
 
                 <!-- Difficulty Selector -->
                 <div class="btn-group" role="group">
-                    <?php foreach ($allLevels as $key => $lvl): ?>
-                        <a href="index.php?difficulty=<?= $key ?>" class="btn <?= $difficulty === $key ? 'btn-primary' : 'btn-outline-primary' ?> btn-sm px-3 fw-bold">
-                            <?= $lvl['name'] ?> (<?= $lvl['pairs'] ?> pares)
+                    <?php foreach ($allLevels as $levelKey => $levelData): ?>
+                        <a href="index.php?difficulty=<?= $levelKey ?>" class="btn <?= $difficulty === $levelKey ? 'btn-primary' : 'btn-outline-primary' ?> btn-sm px-3 fw-bold">
+                            <?= $levelData['name'] ?> (<?= $levelData['pairs'] ?> pares)
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -124,16 +127,16 @@ require __DIR__ . '/../../shared/header.php';
                 </div>
 
                 <div class="memory-grid" style="grid-template-columns: repeat(<?= $levelInfo['cols'] ?>, 1fr);" id="gameBoard">
-                    <?php foreach ($cards as $c): ?>
-                        <div class="memory-card" data-pair="<?= $c['pair_id'] ?>" data-uid="<?= $c['uid'] ?>">
+                    <?php foreach ($cards as $card): ?>
+                        <div class="memory-card" data-pair="<?= $card['pair_id'] ?>" data-uid="<?= $card['uid'] ?>">
                             <!-- Back (Hidden) -->
                             <div class="card-face card-back">
                                 <i class="bi bi-question-lg fs-2"></i>
                             </div>
                             <!-- Front (Revealed) -->
                             <div class="card-face card-front">
-                                <span style="font-size: 2.3rem;"><?= $c['icon'] ?></span>
-                                <span class="small fw-bold text-muted mt-1" style="font-size: 0.72rem;"><?= htmlspecialchars($c['name']) ?></span>
+                                <span style="font-size: 2.3rem;"><?= $card['icon'] ?></span>
+                                <span class="small fw-bold text-muted mt-1" style="font-size: 0.72rem;"><?= htmlspecialchars($card['name']) ?></span>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -166,12 +169,12 @@ require __DIR__ . '/../../shared/header.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($leaderboard as $idx => $sc): ?>
+                                    <?php foreach ($leaderboard as $index => $scoreItem): ?>
                                         <tr>
-                                            <td class="fw-bold text-muted"><?= $idx + 1 ?></td>
-                                            <td class="fw-semibold text-dark"><?= htmlspecialchars($sc['player_name']) ?></td>
-                                            <td class="fw-bold text-primary"><?= number_format($sc['score']) ?> pts</td>
-                                            <td class="text-muted"><?= $sc['time_seconds'] ?>s (<?= $sc['moves'] ?> m)</td>
+                                            <td class="fw-bold text-muted"><?= $index + 1 ?></td>
+                                            <td class="fw-semibold text-dark"><?= htmlspecialchars($scoreItem['player_name']) ?></td>
+                                            <td class="fw-bold text-primary"><?= number_format($scoreItem['score']) ?> pts</td>
+                                            <td class="text-muted"><?= $scoreItem['time_seconds'] ?>s (<?= $scoreItem['moves'] ?> m)</td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -236,120 +239,137 @@ require __DIR__ . '/../../shared/header.php';
 </div>
 
 <script>
-const totalPairs = <?= $levelInfo['pairs'] ?>;
-let moves = 0;
-let pairsFound = 0;
-let timerSeconds = 0;
-let timerInterval = null;
-let gameStarted = false;
-let flippedCards = [];
-let lockBoard = false;
+document.addEventListener('DOMContentLoaded', function() {
+    const totalPairs = <?= $levelInfo['pairs'] ?>;
+    let moves = 0;
+    let pairsFound = 0;
+    let timerSeconds = 0;
+    let timerInterval = null;
+    let gameStarted = false;
+    let flippedCards = [];
+    let lockBoard = false;
 
-const movesCounter = document.getElementById('movesCounter');
-const pairsCounter = document.getElementById('pairsCounter');
-const timerDisplay = document.getElementById('timerDisplay');
-const liveScore = document.getElementById('liveScore');
-const victoryModal = new bootstrap.Modal(document.getElementById('victoryModal'));
+    const movesCounter = document.getElementById('movesCounter');
+    const pairsCounter = document.getElementById('pairsCounter');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const liveScore = document.getElementById('liveScore');
 
-function calculateScore() {
-    const base = totalPairs * 1000;
-    const penalty = (moves * 25) + (timerSeconds * 10);
-    return Math.max(100, base - penalty);
-}
+    const modalElement = document.getElementById('victoryModal');
+    let victoryModal = null;
+    if (modalElement && typeof bootstrap !== 'undefined') {
+        victoryModal = new bootstrap.Modal(modalElement);
+    }
 
-function updateStats() {
-    movesCounter.textContent = moves;
-    pairsCounter.textContent = pairsFound;
-    liveScore.textContent = calculateScore();
-}
+    function calculateScore() {
+        const base = totalPairs * 1000;
+        const penalty = (moves * 25) + (timerSeconds * 10);
+        return Math.max(100, base - penalty);
+    }
 
-function startTimer() {
-    if (timerInterval) return;
-    timerInterval = setInterval(() => {
-        timerSeconds++;
-        const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
-        const secs = String(timerSeconds % 60).padStart(2, '0');
-        timerDisplay.textContent = `${mins}:${secs}`;
-        liveScore.textContent = calculateScore();
-    }, 1000);
-}
+    function updateStats() {
+        if (movesCounter) movesCounter.textContent = moves;
+        if (pairsCounter) pairsCounter.textContent = pairsFound;
+        if (liveScore) liveScore.textContent = calculateScore();
+    }
 
-function stopTimer() {
-    clearInterval(timerInterval);
-}
+    function startTimer() {
+        if (timerInterval) return;
+        timerInterval = setInterval(function() {
+            timerSeconds++;
+            const minutes = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+            const seconds = String(timerSeconds % 60).padStart(2, '0');
+            if (timerDisplay) timerDisplay.textContent = `${minutes}:${seconds}`;
+            if (liveScore) liveScore.textContent = calculateScore();
+        }, 1000);
+    }
 
-document.querySelectorAll('.memory-card').forEach(card => {
-    card.addEventListener('click', function() {
-        if (lockBoard) return;
-        if (this === flippedCards[0]) return;
-        if (this.classList.contains('matched') || this.classList.contains('flipped')) return;
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }
 
-        if (!gameStarted) {
-            gameStarted = true;
-            startTimer();
-        }
+    document.querySelectorAll('.memory-card').forEach(card => {
+        card.addEventListener('click', function() {
+            if (lockBoard) return;
+            if (this === flippedCards[0]) return;
+            if (this.classList.contains('matched') || this.classList.contains('flipped')) return;
 
-        this.classList.add('flipped');
-        flippedCards.push(this);
+            if (!gameStarted) {
+                gameStarted = true;
+                startTimer();
+            }
 
-        if (flippedCards.length === 2) {
-            moves++;
-            updateStats();
-            checkForMatch();
-        }
+            this.classList.add('flipped');
+            flippedCards.push(this);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                updateStats();
+                checkForMatch();
+            }
+        });
     });
-});
 
-function checkForMatch() {
-    const [card1, card2] = flippedCards;
-    const isMatch = card1.dataset.pair === card2.dataset.pair;
+    function checkForMatch() {
+        const [card1, card2] = flippedCards;
+        const isMatch = card1.dataset.pair === card2.dataset.pair;
 
-    if (isMatch) {
-        disableCards();
-    } else {
-        unflipCards();
+        if (isMatch) {
+            disableCards();
+        } else {
+            unflipCards();
+        }
     }
-}
 
-function disableCards() {
-    flippedCards[0].classList.add('matched');
-    flippedCards[1].classList.add('matched');
-    pairsFound++;
-    updateStats();
-    resetBoard();
-
-    if (pairsFound === totalPairs) {
-        stopTimer();
-        const finalScore = calculateScore();
-        document.getElementById('modalMoves').textContent = moves;
-        document.getElementById('modalTime').textContent = timerSeconds + 's';
-        document.getElementById('modalScore').textContent = finalScore;
-        
-        document.getElementById('inputMoves').value = moves;
-        document.getElementById('inputTime').value = timerSeconds;
-        document.getElementById('inputScore').value = finalScore;
-
-        setTimeout(() => {
-            victoryModal.show();
-        }, 500);
-    }
-}
-
-function unflipCards() {
-    lockBoard = true;
-    setTimeout(() => {
-        flippedCards[0].classList.remove('flipped');
-        flippedCards[1].classList.remove('flipped');
+    function disableCards() {
+        flippedCards[0].classList.add('matched');
+        flippedCards[1].classList.add('matched');
+        pairsFound++;
+        updateStats();
         resetBoard();
-    }, 900);
-}
 
-function resetBoard() {
-    flippedCards = [];
-    lockBoard = false;
-}
+        if (pairsFound === totalPairs) {
+            stopTimer();
+            const finalScore = calculateScore();
 
-updateStats();
+            const modalMovesEl = document.getElementById('modalMoves');
+            const modalTimeEl = document.getElementById('modalTime');
+            const modalScoreEl = document.getElementById('modalScore');
+            const inputMoves = document.getElementById('inputMoves');
+            const inputTime = document.getElementById('inputTime');
+            const inputScore = document.getElementById('inputScore');
+
+            if (modalMovesEl) modalMovesEl.textContent = moves;
+            if (modalTimeEl) modalTimeEl.textContent = timerSeconds + 's';
+            if (modalScoreEl) modalScoreEl.textContent = finalScore;
+            
+            if (inputMoves) inputMoves.value = moves;
+            if (inputTime) inputTime.value = timerSeconds;
+            if (inputScore) inputScore.value = finalScore;
+
+            setTimeout(function() {
+                if (victoryModal) {
+                    victoryModal.show();
+                }
+            }, 500);
+        }
+    }
+
+    function unflipCards() {
+        lockBoard = true;
+        setTimeout(function() {
+            if (flippedCards[0]) flippedCards[0].classList.remove('flipped');
+            if (flippedCards[1]) flippedCards[1].classList.remove('flipped');
+            resetBoard();
+        }, 800);
+    }
+
+    function resetBoard() {
+        flippedCards = [];
+        lockBoard = false;
+    }
+
+    updateStats();
+});
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>

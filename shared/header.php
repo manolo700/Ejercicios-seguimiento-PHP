@@ -1,7 +1,7 @@
 <?php
 // Shared Header for all MVC exercises
 if (!isset($pageTitle)) {
-    $pageTitle = 'Ejercicio PHP';
+    $pageTitle = 'PHP Web Architecture';
 }
 if (!isset($activeExercise)) {
     $activeExercise = 0;
@@ -9,17 +9,17 @@ if (!isset($activeExercise)) {
 $basePath = isset($depth) && $depth === 1 ? '../' : './';
 
 $exercises = [
-    1 => ['name' => '1. Lista de Tareas', 'folder' => '01-lista-tareas', 'icon' => 'bi-check2-square'],
-    2 => ['name' => '2. Calculadora de Propinas', 'folder' => '02-calculadora-propinas', 'icon' => 'bi-calculator'],
-    3 => ['name' => '3. Generador de Contraseñas', 'folder' => '03-generador-contrasenas', 'icon' => 'bi-shield-lock'],
-    4 => ['name' => '4. Gestor de Gastos', 'folder' => '04-gestor-gastos', 'icon' => 'bi-cash-coin'],
-    5 => ['name' => '5. Sistema de Reservas', 'folder' => '05-sistema-reservas', 'icon' => 'bi-calendar-check'],
-    6 => ['name' => '6. Gestor de Notas', 'folder' => '06-gestor-notas', 'icon' => 'bi-journal-text'],
-    7 => ['name' => '7. Calendario de Eventos', 'folder' => '07-calendario-eventos', 'icon' => 'bi-calendar-event'],
-    8 => ['name' => '8. Plataforma de Recetas', 'folder' => '08-plataforma-recetas', 'icon' => 'bi-egg-fried'],
-    9 => ['name' => '9. Juego de Memoria', 'folder' => '09-juego-memoria', 'icon' => 'bi-grid-3x3-gap'],
-    10 => ['name' => '10. Plataforma de Encuestas', 'folder' => '10-plataforma-encuestas', 'icon' => 'bi-bar-chart-line'],
-    11 => ['name' => '11. Cronómetro Online', 'folder' => '11-cronometro-online', 'icon' => 'bi-stopwatch'],
+    1 => ['name' => '1. Task List', 'folder' => '01-lista-tareas', 'icon' => 'bi-check2-square'],
+    2 => ['name' => '2. Tip Calculator', 'folder' => '02-calculadora-propinas', 'icon' => 'bi-calculator'],
+    3 => ['name' => '3. Password Generator', 'folder' => '03-generador-contrasenas', 'icon' => 'bi-shield-lock'],
+    4 => ['name' => '4. Expense Manager', 'folder' => '04-gestor-gastos', 'icon' => 'bi-cash-coin'],
+    5 => ['name' => '5. Booking System', 'folder' => '05-sistema-reservas', 'icon' => 'bi-calendar-check'],
+    6 => ['name' => '6. Notes Manager', 'folder' => '06-gestor-notas', 'icon' => 'bi-journal-text'],
+    7 => ['name' => '7. Event Calendar', 'folder' => '07-calendario-eventos', 'icon' => 'bi-calendar-event'],
+    8 => ['name' => '8. Recipe Platform', 'folder' => '08-plataforma-recetas', 'icon' => 'bi-egg-fried'],
+    9 => ['name' => '9. Memory Game', 'folder' => '09-juego-memoria', 'icon' => 'bi-grid-3x3-gap'],
+    10 => ['name' => '10. Poll Platform', 'folder' => '10-plataforma-encuestas', 'icon' => 'bi-bar-chart-line'],
+    11 => ['name' => '11. Online Stopwatch', 'folder' => '11-cronometro-online', 'icon' => 'bi-stopwatch'],
 ];
 ?>
 <!DOCTYPE html>
@@ -28,7 +28,7 @@ $exercises = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle) ?> | Arquitectura MVC</title>
-    <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap 5.3.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -36,6 +36,8 @@ $exercises = [
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5.3.3 JS Bundle (Loaded in head so bootstrap is available immediately in all views) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         :root {
             --app-font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -126,7 +128,7 @@ $exercises = [
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
                 <li class="nav-item">
                     <a class="nav-link <?= $activeExercise === 0 ? 'active fw-bold text-white' : '' ?>" href="<?= $basePath ?>index.php">
-                        <i class="bi bi-house-door me-1"></i> Inicio / Todos
+                        <i class="bi bi-house-door me-1"></i> Inicio / Dashboard
                     </a>
                 </li>
                 <li class="nav-item dropdown">
@@ -148,7 +150,7 @@ $exercises = [
             <div class="d-flex align-items-center gap-2">
                 <a href="https://github.com/manolo700/Ejercicios-seguimiento-PHP" target="_blank" class="btn btn-sm btn-outline-light d-flex align-items-center gap-2">
                     <i class="bi bi-github"></i>
-                    <span>Repositorio GitHub</span>
+                    <span>GitHub Repo</span>
                 </a>
             </div>
         </div>
