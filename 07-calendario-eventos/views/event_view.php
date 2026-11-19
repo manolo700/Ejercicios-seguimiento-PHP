@@ -5,12 +5,12 @@ $depth = 1;
 require __DIR__ . '/../../shared/header.php';
 
 $monthNames = [
-    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
-    5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
-    9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+    1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
+    5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
+    9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'
 ];
 
-$daysOfWeek = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+$daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 $todayDate = date('Y-m-d');
 ?>
 
@@ -24,16 +24,16 @@ $todayDate = date('Y-m-d');
                         <i class="bi bi-diagram-3-fill me-1"></i> MVC Architecture (Model: Event, View: event_view, Controller: EventController)
                     </span>
                     <h2 class="h3 fw-bold mb-1">
-                        <i class="bi bi-calendar-event text-primary me-2"></i>Calendario Interactivo de Eventos
+                        <i class="bi bi-calendar-event text-primary me-2"></i>Interactive Event Calendar
                     </h2>
                     <p class="text-muted mb-0 small">
-                        Planifica fechas clave, administra actividades y recibe alertas y notificaciones con recordatorios.
+                        Schedule key dates, organize activities, and receive automatic reminder notifications.
                     </p>
                 </div>
                 <div>
                     <button class="btn btn-brand px-3 py-2 d-flex align-items-center gap-2" id="btnNewEvent">
                         <i class="bi bi-calendar-plus"></i>
-                        <span>Nuevo Evento</span>
+                        <span>New Event</span>
                     </button>
                 </div>
             </div>
@@ -46,9 +46,9 @@ $todayDate = date('Y-m-d');
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="fw-bold text-dark d-flex align-items-center gap-2">
                     <i class="bi bi-bell-fill text-warning fs-5"></i>
-                    <span>Recordatorios Próximos (Próximos 7 días)</span>
+                    <span>Upcoming Reminders (Next 7 Days)</span>
                 </span>
-                <span class="badge bg-warning text-dark"><?= count($reminders) ?> alertas</span>
+                <span class="badge bg-warning text-dark"><?= count($reminders) ?> alerts</span>
             </div>
             <div class="row g-2">
                 <?php foreach ($reminders as $reminder): ?>
@@ -56,7 +56,7 @@ $todayDate = date('Y-m-d');
                         <div class="p-2 bg-white rounded-3 border small">
                             <div class="fw-bold text-dark d-flex justify-content-between">
                                 <span><?= htmlspecialchars($reminder['title']) ?></span>
-                                <span class="badge bg-light text-muted border"><?= date('d/m', strtotime($reminder['event_date'])) ?></span>
+                                <span class="badge bg-light text-muted border"><?= date('m/d', strtotime($reminder['event_date'])) ?></span>
                             </div>
                             <div class="text-muted mt-1">
                                 <i class="bi bi-clock me-1"></i><?= htmlspecialchars($reminder['start_time']) ?> hrs
@@ -76,21 +76,21 @@ $todayDate = date('Y-m-d');
         <div class="card-header bg-white border-bottom py-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
             <div class="d-flex align-items-center gap-2">
                 <a href="index.php?year=<?= $prevYear ?>&month=<?= $prevMonth ?>" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-chevron-left"></i> Anterior
+                    <i class="bi bi-chevron-left"></i> Previous
                 </a>
                 <a href="index.php?year=<?= date('Y') ?>&month=<?= date('m') ?>" class="btn btn-sm btn-outline-primary">
-                    Hoy
+                    Today
                 </a>
                 <a href="index.php?year=<?= $nextYear ?>&month=<?= $nextMonth ?>" class="btn btn-outline-secondary btn-sm">
-                    Siguiente <i class="bi bi-chevron-right"></i>
+                    Next <i class="bi bi-chevron-right"></i>
                 </a>
             </div>
             <h4 class="mb-0 fw-bold text-dark">
-                <?= $monthNames[$month] ?> de <?= $year ?>
+                <?= $monthNames[$month] ?> <?= $year ?>
             </h4>
             <div class="d-flex align-items-center gap-2">
                 <span class="badge bg-primary-subtle text-primary border px-3 py-2">
-                    <?= array_sum(array_map('count', $eventsByDay)) ?> eventos este mes
+                    <?= array_sum(array_map('count', $eventsByDay)) ?> events this month
                 </span>
             </div>
         </div>
@@ -130,7 +130,7 @@ $todayDate = date('Y-m-d');
                                     // Day Header
                                     echo '<div class="d-flex justify-content-between align-items-center mb-1">';
                                     echo '<span class="badge ' . ($isToday ? 'bg-primary text-white' : 'text-dark fw-bold') . ' rounded-circle" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem;">' . $currentDay . '</span>';
-                                    echo '<button type="button" class="btn btn-link btn-sm text-decoration-none text-muted p-0 add-to-day-btn" data-date="' . $dateString . '" title="Agregar evento en este día"><i class="bi bi-plus-circle"></i></button>';
+                                    echo '<button type="button" class="btn btn-link btn-sm text-decoration-none text-muted p-0 add-to-day-btn" data-date="' . $dateString . '" title="Add event on this date"><i class="bi bi-plus-circle"></i></button>';
                                     echo '</div>';
 
                                     // Events inside this day
@@ -180,7 +180,7 @@ $todayDate = date('Y-m-d');
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-bottom">
                 <h5 class="modal-title fw-bold" id="eventModalTitle">
-                    <i class="bi bi-calendar-plus text-primary me-2"></i>Nuevo Evento
+                    <i class="bi bi-calendar-plus text-primary me-2"></i>New Event
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -188,40 +188,40 @@ $todayDate = date('Y-m-d');
                 <input type="hidden" name="id" id="eventId" value="0">
                 <div class="modal-body p-4">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Título del Evento</label>
-                        <input type="text" name="title" id="eventTitle" class="form-control" placeholder="Ej. Presentación de Resultados" required>
+                        <label class="form-label small fw-bold">Event Title</label>
+                        <input type="text" name="title" id="eventTitle" class="form-control" placeholder="e.g., Team Project Review" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Descripción</label>
-                        <textarea name="description" id="eventDesc" rows="2" class="form-control" placeholder="Detalles de la reunión..."></textarea>
+                        <label class="form-label small fw-bold">Description</label>
+                        <textarea name="description" id="eventDesc" rows="2" class="form-control" placeholder="Meeting details, agenda..."></textarea>
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold">Fecha</label>
+                            <label class="form-label small fw-bold">Date</label>
                             <input type="date" name="event_date" id="eventDate" class="form-control" required>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold">Hora Inicio</label>
+                            <label class="form-label small fw-bold">Start Time</label>
                             <input type="time" name="start_time" id="eventStart" class="form-control" value="09:00" required>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold">Hora Fin (Opc)</label>
+                            <label class="form-label small fw-bold">End Time (Opt)</label>
                             <input type="time" name="end_time" id="eventEnd" class="form-control">
                         </div>
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Categoría</label>
+                            <label class="form-label small fw-bold">Category</label>
                             <select name="category" id="eventCat" class="form-select">
-                                <option value="Trabajo">Trabajo</option>
-                                <option value="Académico">Académico</option>
+                                <option value="Work">Work</option>
+                                <option value="Academic">Academic</option>
                                 <option value="Personal">Personal</option>
-                                <option value="Conferencia">Conferencia</option>
-                                <option value="Urgente">Urgente</option>
+                                <option value="Conference">Conference</option>
+                                <option value="Urgent">Urgent</option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Color del Evento</label>
+                            <label class="form-label small fw-bold">Event Color</label>
                             <input type="color" name="color" id="eventColor" class="form-control form-control-color w-100" value="#4f46e5">
                         </div>
                     </div>
@@ -229,20 +229,20 @@ $todayDate = date('Y-m-d');
                     <div class="p-3 bg-light rounded-3 border">
                         <div class="form-check form-switch mb-2">
                             <input class="form-check-input" type="checkbox" role="switch" name="has_reminder" id="eventHasReminder" value="1">
-                            <label class="form-check-label small fw-bold" for="eventHasReminder">Activar Recordatorio / Notificación</label>
+                            <label class="form-check-label small fw-bold" for="eventHasReminder">Enable Reminder / Notification</label>
                         </div>
-                        <input type="text" name="reminder_note" id="eventReminderNote" class="form-control form-control-sm" placeholder="Nota de alerta (Ej. Preparar diapositivas)...">
+                        <input type="text" name="reminder_note" id="eventReminderNote" class="form-control form-control-sm" placeholder="Alert note (e.g., Prepare slide deck)...">
                     </div>
                 </div>
                 <div class="modal-footer border-top bg-light d-flex justify-content-between">
                     <div>
-                        <a href="#" id="btnDeleteEvent" class="btn btn-outline-danger btn-sm" style="display: none;" onclick="return confirm('¿Seguro que deseas eliminar este evento?');">
-                            <i class="bi bi-trash"></i> Eliminar
+                        <a href="#" id="btnDeleteEvent" class="btn btn-outline-danger btn-sm" style="display: none;" onclick="return confirm('Are you sure you want to delete this event?');">
+                            <i class="bi bi-trash"></i> Delete
                         </a>
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-brand">Guardar Evento</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-brand">Save Event</button>
                     </div>
                 </div>
             </form>
@@ -270,14 +270,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnDeleteEvent = document.getElementById('btnDeleteEvent');
 
     function resetModal(defaultDate = '<?= date('Y-m-d') ?>') {
-        eventModalTitle.innerHTML = '<i class="bi bi-calendar-plus text-primary me-2"></i>Nuevo Evento';
+        eventModalTitle.innerHTML = '<i class="bi bi-calendar-plus text-primary me-2"></i>New Event';
         eventId.value = 0;
         eventTitle.value = '';
         eventDesc.value = '';
         eventDate.value = defaultDate;
         eventStart.value = '09:00';
         eventEnd.value = '';
-        eventCat.value = 'Trabajo';
+        eventCat.value = 'Work';
         eventColor.value = '#4f46e5';
         eventHasReminder.checked = false;
         eventReminderNote.value = '';
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.event-pill').forEach(pill => {
         pill.addEventListener('click', function() {
-            eventModalTitle.innerHTML = '<i class="bi bi-pencil-square text-primary me-2"></i>Editar Evento';
+            eventModalTitle.innerHTML = '<i class="bi bi-pencil-square text-primary me-2"></i>Edit Event';
             const id = this.dataset.id;
             eventId.value = id;
             eventTitle.value = this.dataset.title;

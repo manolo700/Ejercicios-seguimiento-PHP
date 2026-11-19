@@ -70,7 +70,7 @@ class PollController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = $_POST['title'] ?? '';
             $desc = $_POST['description'] ?? '';
-            $cat = $_POST['category'] ?? 'Tecnología';
+            $cat = $_POST['category'] ?? 'Technology';
             $options = $_POST['options'] ?? [];
 
             if (!empty($title) && is_array($options) && count($options) >= 2) {

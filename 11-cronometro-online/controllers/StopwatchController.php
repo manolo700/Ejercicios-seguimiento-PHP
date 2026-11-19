@@ -32,7 +32,7 @@ class StopwatchController {
 
     private function saveSession(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['session_name'] ?? 'Sesión Cronómetro';
+            $name = $_POST['session_name'] ?? 'Stopwatch Session';
             $totalTime = (int)($_POST['total_time_ms'] ?? 0);
             $rawLaps = $_POST['laps_json'] ?? '[]';
             $laps = json_decode($rawLaps, true) ?: [];

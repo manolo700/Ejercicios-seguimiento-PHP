@@ -1,4 +1,8 @@
 <?php
+/**
+ * Task Controller
+ * Handles HTTP requests for task management.
+ */
 require_once __DIR__ . '/../models/Task.php';
 
 class TaskController {
@@ -41,7 +45,7 @@ class TaskController {
     private function add(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = $_POST['title'] ?? '';
-            $priority = $_POST['priority'] ?? 'media';
+            $priority = $_POST['priority'] ?? 'medium';
             $this->model->add($title, $priority);
         }
         $filter = $_POST['current_filter'] ?? 'all';
@@ -76,4 +80,3 @@ class TaskController {
         exit;
     }
 }
-

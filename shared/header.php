@@ -23,11 +23,11 @@ $exercises = [
 ];
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle) ?> | Arquitectura MVC</title>
+    <title><?= htmlspecialchars($pageTitle) ?> | MVC Architecture</title>
     <!-- Bootstrap 5.3.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -36,7 +36,7 @@ $exercises = [
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Bootstrap 5.3.3 JS Bundle (Loaded in head so bootstrap is available immediately in all views) -->
+    <!-- Bootstrap 5.3.3 JS Bundle (Loaded in head for immediate availability) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         :root {
@@ -118,7 +118,7 @@ $exercises = [
             <span class="p-2 rounded-3 bg-white text-primary d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px;">
                 <i class="bi bi-layers-fill fs-5"></i>
             </span>
-            <span>Seguimiento PHP</span>
+            <span>PHP Web Projects</span>
             <span class="brand-badge ms-1">MVC Framework</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
@@ -128,12 +128,12 @@ $exercises = [
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
                 <li class="nav-item">
                     <a class="nav-link <?= $activeExercise === 0 ? 'active fw-bold text-white' : '' ?>" href="<?= $basePath ?>index.php">
-                        <i class="bi bi-house-door me-1"></i> Inicio / Dashboard
+                        <i class="bi bi-house-door me-1"></i> Home / Dashboard
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownEjercicios" role="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-grid me-1"></i> Ejercicios (11)
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="dropdownExercises" role="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-grid me-1"></i> Exercises (11)
                     </a>
                     <ul class="dropdown-menu shadow-lg border-0 py-2" style="max-height: 450px; overflow-y: auto;">
                         <?php foreach ($exercises as $num => $ex): ?>
@@ -150,7 +150,7 @@ $exercises = [
             <div class="d-flex align-items-center gap-2">
                 <a href="https://github.com/manolo700/Ejercicios-seguimiento-PHP" target="_blank" class="btn btn-sm btn-outline-light d-flex align-items-center gap-2">
                     <i class="bi bi-github"></i>
-                    <span>GitHub Repo</span>
+                    <span>GitHub Repository</span>
                 </a>
             </div>
         </div>

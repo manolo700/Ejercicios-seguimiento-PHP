@@ -1,13 +1,13 @@
 <?php
-$pageTitle = '04 - Gestor de Gastos';
+$pageTitle = '04 - Expense Manager';
 $activeExercise = 4;
 $depth = 1;
 require __DIR__ . '/../../shared/header.php';
 
-$meses = [
-    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
-    5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
-    9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+$monthNames = [
+    1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
+    5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
+    9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'
 ];
 ?>
 
@@ -18,19 +18,19 @@ $meses = [
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div>
                     <span class="mvc-badge mb-2 d-inline-block">
-                        <i class="bi bi-diagram-3-fill me-1"></i> Arquitectura MVC (Model: Expense, View: expense_view, Controller: ExpenseController)
+                        <i class="bi bi-diagram-3-fill me-1"></i> MVC Architecture (Model: Expense, View: expense_view, Controller: ExpenseController)
                     </span>
                     <h2 class="h3 fw-bold mb-1">
-                        <i class="bi bi-cash-coin text-primary me-2"></i>Gestor de Gastos y Finanzas Personales
+                        <i class="bi bi-cash-coin text-primary me-2"></i>Daily Expense & Budget Manager
                     </h2>
                     <p class="text-muted mb-0 small">
-                        Registra gastos diarios por categoría, monitorea resúmenes mensuales y controla tu presupuesto.
+                        Record daily expenses by category, monitor monthly financial summaries, and track your budget.
                     </p>
                 </div>
                 <!-- Month Filter Form -->
                 <form action="index.php" method="GET" class="d-flex align-items-center gap-2">
                     <select name="month" class="form-select form-select-sm fw-semibold">
-                        <?php foreach ($meses as $num => $nom): ?>
+                        <?php foreach ($monthNames as $num => $nom): ?>
                             <option value="<?= $num ?>" <?= $month == $num ? 'selected' : '' ?>><?= $nom ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -53,7 +53,7 @@ $meses = [
             <div class="card app-card border-0 p-3 bg-white">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small text-uppercase fw-semibold">Gasto Total Mensual</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Total Monthly Spent</div>
                         <div class="fs-4 fw-bold text-primary mt-1">$<?= number_format($stats['total_amount'], 2) ?></div>
                     </div>
                     <div class="p-3 rounded-circle bg-primary-subtle text-primary">
@@ -66,7 +66,7 @@ $meses = [
             <div class="card app-card border-0 p-3 bg-white">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small text-uppercase fw-semibold">Promedio Diario</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Daily Average</div>
                         <div class="fs-4 fw-bold text-dark mt-1">$<?= number_format($stats['daily_average'], 2) ?></div>
                     </div>
                     <div class="p-3 rounded-circle bg-info-subtle text-info">
@@ -79,7 +79,7 @@ $meses = [
             <div class="card app-card border-0 p-3 bg-white">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small text-uppercase fw-semibold">Gasto Mayor</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Highest Expense</div>
                         <div class="fs-4 fw-bold text-danger mt-1">$<?= number_format($stats['max_amount'], 2) ?></div>
                     </div>
                     <div class="p-3 rounded-circle bg-danger-subtle text-danger">
@@ -92,7 +92,7 @@ $meses = [
             <div class="card app-card border-0 p-3 bg-white">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <div class="text-muted small text-uppercase fw-semibold">Total Transacciones</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Total Transactions</div>
                         <div class="fs-4 fw-bold text-success mt-1"><?= $stats['total_count'] ?></div>
                     </div>
                     <div class="p-3 rounded-circle bg-success-subtle text-success">
@@ -109,24 +109,24 @@ $meses = [
             <div class="card app-card border-0 mb-4">
                 <div class="card-header bg-white border-bottom py-3">
                     <h5 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-plus-circle text-primary me-2"></i>Registrar Gasto
+                        <i class="bi bi-plus-circle text-primary me-2"></i>Record New Expense
                     </h5>
                 </div>
                 <div class="card-body p-4">
                     <form action="index.php?action=add" method="POST">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold">Descripción del Gasto</label>
-                            <input type="text" name="title" class="form-control" placeholder="Ej. Almuerzo de trabajo" required>
+                            <label class="form-label small fw-bold">Description / Concept</label>
+                            <input type="text" name="title" class="form-control" placeholder="e.g., Work lunch" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small fw-bold">Monto ($)</label>
+                            <label class="form-label small fw-bold">Amount ($)</label>
                             <div class="input-group">
                                 <span class="input-group-text">$</span>
                                 <input type="number" step="0.01" min="0.01" name="amount" class="form-control" placeholder="0.00" required>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small fw-bold">Categoría</label>
+                            <label class="form-label small fw-bold">Category</label>
                             <select name="category" class="form-select" required>
                                 <?php foreach ($categories as $catName => $catMeta): ?>
                                     <option value="<?= $catName ?>"><?= $catName ?></option>
@@ -134,15 +134,15 @@ $meses = [
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small fw-bold">Fecha del Gasto</label>
+                            <label class="form-label small fw-bold">Expense Date</label>
                             <input type="date" name="expense_date" class="form-control" value="<?= date('Y-m-d') ?>" required>
                         </div>
                         <div class="mb-4">
-                            <label class="form-label small fw-bold">Notas Adicionales (Opcional)</label>
-                            <textarea name="notes" rows="2" class="form-control" placeholder="Detalles extra..."></textarea>
+                            <label class="form-label small fw-bold">Notes (Optional)</label>
+                            <textarea name="notes" rows="2" class="form-control" placeholder="Additional details..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-brand w-100 py-2">
-                            <i class="bi bi-save me-1"></i> Guardar Gasto
+                            <i class="bi bi-save me-1"></i> Save Expense
                         </button>
                     </form>
                 </div>
@@ -152,12 +152,12 @@ $meses = [
             <div class="card app-card border-0">
                 <div class="card-header bg-white border-bottom py-3">
                     <h5 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-pie-chart text-primary me-2"></i>Distribución por Categoría
+                        <i class="bi bi-pie-chart text-primary me-2"></i>Category Distribution
                     </h5>
                 </div>
                 <div class="card-body p-4">
                     <?php if (empty($categoryBreakdown)): ?>
-                        <p class="text-muted small text-center my-3">Sin gastos registrados este mes.</p>
+                        <p class="text-muted small text-center my-3">No expenses recorded for this month.</p>
                     <?php else: ?>
                         <?php foreach ($categoryBreakdown as $cat): ?>
                             <?php 
@@ -183,27 +183,27 @@ $meses = [
             <div class="card app-card border-0">
                 <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-list-columns-reverse text-primary me-2"></i>Gastos de <?= $meses[$month] ?> <?= $year ?>
+                        <i class="bi bi-list-columns-reverse text-primary me-2"></i>Expenses for <?= $monthNames[$month] ?> <?= $year ?>
                     </h5>
-                    <span class="badge bg-light text-dark border"><?= count($expenses) ?> registros</span>
+                    <span class="badge bg-light text-dark border"><?= count($expenses) ?> records</span>
                 </div>
                 <div class="card-body p-0">
                     <?php if (empty($expenses)): ?>
                         <div class="text-center py-5 text-muted">
                             <i class="bi bi-inbox display-4"></i>
-                            <h5 class="mt-3">No hay gastos para este mes</h5>
-                            <p class="small">Utiliza el formulario de la izquierda para agregar tu primer gasto.</p>
+                            <h5 class="mt-3">No expenses recorded for this period</h5>
+                            <p class="small">Use the form on the left to add your first expense.</p>
                         </div>
                     <?php else: ?>
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light small text-uppercase">
                                     <tr>
-                                        <th>Fecha</th>
-                                        <th>Concepto</th>
-                                        <th>Categoría</th>
-                                        <th>Monto</th>
-                                        <th class="text-end">Acción</th>
+                                        <th>Date</th>
+                                        <th>Concept</th>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                        <th class="text-end">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -213,7 +213,7 @@ $meses = [
                                         ?>
                                         <tr>
                                             <td class="text-muted small text-nowrap">
-                                                <?= date('d/m/Y', strtotime($item['expense_date'])) ?>
+                                                <?= date('Y-m-d', strtotime($item['expense_date'])) ?>
                                             </td>
                                             <td>
                                                 <div class="fw-semibold text-dark"><?= htmlspecialchars($item['title']) ?></div>
@@ -233,8 +233,8 @@ $meses = [
                                             <td class="text-end">
                                                 <a href="index.php?action=delete&id=<?= $item['id'] ?>&year=<?= $year ?>&month=<?= $month ?>" 
                                                    class="btn btn-sm btn-outline-danger" 
-                                                   title="Eliminar gasto"
-                                                   onclick="return confirm('¿Seguro que deseas eliminar este gasto?');">
+                                                   title="Delete expense"
+                                                   onclick="return confirm('Are you sure you want to delete this expense?');">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
                                             </td>
@@ -251,4 +251,3 @@ $meses = [
 </div>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
-

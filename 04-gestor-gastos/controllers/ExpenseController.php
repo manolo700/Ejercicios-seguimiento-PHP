@@ -1,4 +1,8 @@
 <?php
+/**
+ * Expense Controller
+ * Handles monthly filtering, expense creation, and deletion requests.
+ */
 require_once __DIR__ . '/../models/Expense.php';
 
 class ExpenseController {
@@ -44,7 +48,7 @@ class ExpenseController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = $_POST['title'] ?? '';
             $amount = isset($_POST['amount']) ? (float)$_POST['amount'] : 0.0;
-            $category = $_POST['category'] ?? 'Otros';
+            $category = $_POST['category'] ?? 'Other';
             $date = $_POST['expense_date'] ?? date('Y-m-d');
             $notes = $_POST['notes'] ?? '';
 
@@ -72,4 +76,3 @@ class ExpenseController {
         exit;
     }
 }
-

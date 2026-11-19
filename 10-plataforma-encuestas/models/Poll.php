@@ -1,4 +1,8 @@
 <?php
+/**
+ * Poll Model
+ * Manages survey polls, answer options, session-based votes, and statistical reports.
+ */
 class Poll {
     private PDO $db;
 
@@ -15,7 +19,7 @@ class Poll {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             description TEXT,
-            category TEXT DEFAULT 'Tecnología',
+            category TEXT DEFAULT 'Technology',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
@@ -35,22 +39,22 @@ class Poll {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )");
 
-        // Preload sample polls if empty
+        // Preload sample polls if database is newly initialized
         $count = (int)$this->db->query("SELECT COUNT(*) FROM polls")->fetchColumn();
         if ($count === 0) {
             $p1 = $this->create(
-                '¿Cuál es tu lenguaje preferido para desarrollo backend?',
-                'Encuesta sobre herramientas preferidas en proyectos web actuales.',
-                'Tecnología',
-                ['PHP (Moderno / Laravel)', 'JavaScript (Node / Bun)', 'Python (FastAPI / Django)', 'Go / Golang', 'Java / Spring Boot']
+                'What is your preferred backend technology for web development?',
+                'Community survey regarding modern developer tools and server-side ecosystems.',
+                'Technology',
+                ['PHP (Modern / Laravel / MVC)', 'JavaScript (Node.js / Bun)', 'Python (FastAPI / Django)', 'Go (Golang)', 'Java (Spring Boot)']
             );
             $this->addDummyVotes($p1, [45, 38, 29, 21, 15]);
 
             $p2 = $this->create(
-                '¿Qué modalidad de trabajo prefieres?',
-                'Evaluación de preferencias laborales en la industria digital.',
-                'Trabajo',
-                ['100% Remoto', 'Híbrido (2-3 días presencial)', '100% Presencial en Oficina']
+                'What is your ideal work arrangement?',
+                'Assessment of current workplace preferences in the software engineering sector.',
+                'Work',
+                ['100% Fully Remote', 'Hybrid (2-3 days in office)', '100% On-site Office']
             );
             $this->addDummyVotes($p2, [72, 34, 6]);
         }
@@ -125,7 +129,6 @@ class Poll {
     }
 
     public function vote(int $pollId, int $optionId, string $sessionToken): bool {
-        // Check if already voted
         if ($this->hasVoted($pollId, $sessionToken)) {
             return false;
         }
@@ -153,4 +156,3 @@ class Poll {
         return $stmt->execute([':id' => $id]);
     }
 }
-

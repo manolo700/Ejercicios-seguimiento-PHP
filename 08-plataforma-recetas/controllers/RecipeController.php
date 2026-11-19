@@ -1,4 +1,8 @@
 <?php
+/**
+ * Recipe Controller
+ * Coordinates recipe browsing, searching, and submissions.
+ */
 require_once __DIR__ . '/../models/Recipe.php';
 
 class RecipeController {
@@ -49,12 +53,12 @@ class RecipeController {
                     'description' => $_POST['description'] ?? '',
                     'ingredients' => $ingredients,
                     'instructions' => $instructions,
-                    'meal_type' => $_POST['meal_type'] ?? 'Almuerzo',
-                    'difficulty' => $_POST['difficulty'] ?? 'Media',
+                    'meal_type' => $_POST['meal_type'] ?? 'Lunch',
+                    'difficulty' => $_POST['difficulty'] ?? 'Medium',
                     'prep_time_minutes' => (int)($_POST['prep_time_minutes'] ?? 30),
                     'servings' => (int)($_POST['servings'] ?? 4),
                     'image_url' => $_POST['image_url'] ?? '',
-                    'author_name' => $_POST['author_name'] ?? 'Chef Anónimo'
+                    'author_name' => $_POST['author_name'] ?? 'Community Chef'
                 ]);
             }
         }
@@ -71,4 +75,3 @@ class RecipeController {
         exit;
     }
 }
-

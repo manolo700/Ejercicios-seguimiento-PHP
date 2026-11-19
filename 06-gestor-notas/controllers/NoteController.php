@@ -1,4 +1,8 @@
 <?php
+/**
+ * Note Controller
+ * Manages actions for sticky notes, category filters, and search requests.
+ */
 require_once __DIR__ . '/../models/Note.php';
 
 class NoteController {
@@ -82,4 +86,3 @@ class NoteController {
         exit;
     }
 }
-

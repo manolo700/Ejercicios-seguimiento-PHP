@@ -1,59 +1,59 @@
-# Ejercicios de Seguimiento PHP - Arquitectura MVC
+# PHP Coursework Exercises - MVC Architecture
 
-Repositorio oficial para la materia de **Programación Orientada a la Web con PHP**. Este proyecto reúne **11 aplicaciones web completas**, todas implementadas bajo el patrón de diseño arquitectónico **Modelo-Vista-Controlador (MVC)**, con interfaces interactivas, responsivas y persistencia autónoma mediante SQLite (PDO).
+Official repository for the **Web-Oriented Programming with PHP** course. This project contains **11 complete web applications**, all implemented following the architectural design pattern **Model-View-Controller (MVC)**, featuring responsive interactive user interfaces and zero-configuration SQLite (PDO) persistence.
 
 ---
 
-## 🚀 Repositorio en GitHub
+## 🚀 GitHub Repository
 [https://github.com/manolo700/Ejercicios-seguimiento-PHP](https://github.com/manolo700/Ejercicios-seguimiento-PHP)
 
 ---
 
-## 📋 Catálogo de los 11 Ejercicios
+## 📋 Catalog of the 11 Exercises
 
-| # | Ejercicio | Carpeta | Modelo | Controlador | Vista |
-|---|-----------|---------|--------|-------------|-------|
-| 1 | **Lista de Tareas** | `01-lista-tareas/` | `Task.php` | `TaskController.php` | `task_view.php` |
-| 2 | **Calculadora de Propinas** | `02-calculadora-propinas/` | `TipCalculator.php` | `TipController.php` | `tip_view.php` |
-| 3 | **Generador de Contraseñas** | `03-generador-contrasenas/` | `PasswordGenerator.php` | `PasswordController.php` | `password_view.php` |
-| 4 | **Gestor de Gastos** | `04-gestor-gastos/` | `Expense.php` | `ExpenseController.php` | `expense_view.php` |
-| 5 | **Sistema de Reservas** | `05-sistema-reservas/` | `Booking.php` | `BookingController.php` | `booking_view.php` |
-| 6 | **Gestor de Notas** | `06-gestor-notas/` | `Note.php` | `NoteController.php` | `note_view.php` |
-| 7 | **Calendario de Eventos** | `07-calendario-eventos/` | `Event.php` | `EventController.php` | `event_view.php` |
-| 8 | **Plataforma de Recetas** | `08-plataforma-recetas/` | `Recipe.php` | `RecipeController.php` | `recipe_view.php` |
-| 9 | **Juego de Memoria** | `09-juego-memoria/` | `MemoryGame.php` | `GameController.php` | `game_view.php` |
-| 10 | **Plataforma de Encuestas** | `10-plataforma-encuestas/` | `Poll.php` | `PollController.php` | `poll_view.php` |
-| 11 | **Cronómetro Online** | `11-cronometro-online/` | `Stopwatch.php` | `StopwatchController.php` | `stopwatch_view.php` |
+| # | Exercise | Folder | Model | Controller | View |
+|---|----------|--------|-------|------------|------|
+| 1 | **Task List (To-Do)** | `01-lista-tareas/` | `Task.php` | `TaskController.php` | `task_view.php` |
+| 2 | **Tip Calculator** | `02-calculadora-propinas/` | `TipCalculator.php` | `TipController.php` | `tip_view.php` |
+| 3 | **Secure Password Generator** | `03-generador-contrasenas/` | `PasswordGenerator.php` | `PasswordController.php` | `password_view.php` |
+| 4 | **Expense Manager** | `04-gestor-gastos/` | `Expense.php` | `ExpenseController.php` | `expense_view.php` |
+| 5 | **Booking & Reservation System** | `05-sistema-reservas/` | `Booking.php` | `BookingController.php` | `booking_view.php` |
+| 6 | **Note Taking App** | `06-gestor-notas/` | `Note.php` | `NoteController.php` | `note_view.php` |
+| 7 | **Interactive Event Calendar** | `07-calendario-eventos/` | `Event.php` | `EventController.php` | `event_view.php` |
+| 8 | **Recipe Sharing Platform** | `08-plataforma-recetas/` | `Recipe.php` | `RecipeController.php` | `recipe_view.php` |
+| 9 | **Memory Match Card Game** | `09-juego-memoria/` | `MemoryGame.php` | `GameController.php` | `game_view.php` |
+| 10 | **Survey & Polling Platform** | `10-plataforma-encuestas/` | `Poll.php` | `PollController.php` | `poll_view.php` |
+| 11 | **High-Precision Online Stopwatch** | `11-cronometro-online/` | `Stopwatch.php` | `StopwatchController.php` | `stopwatch_view.php` |
 
 ---
 
-## 🏗️ Arquitectura MVC Empleada
+## 🏗️ MVC Architecture Design
 
-Cada ejercicio cuenta con su propia estructura independiente y desacoplada:
+Each exercise is organized under a decoupled and self-contained structure:
 
 ```text
-[ejercicio]/
-├── index.php                  # Front Controller / Enrutador
-├── controllers/               # Maneja la petición y orquesta el flujo
+[exercise-folder]/
+├── index.php                  # Front Controller / Entry point
+├── controllers/               # Handles HTTP requests & coordinates flow
 │   └── [Name]Controller.php
-├── models/                    # Lógica de negocio y persistencia
+├── models/                    # Business logic & SQLite persistence
 │   └── [Name].php
-├── views/                     # Presentación e interfaz HTML/CSS/JS
+├── views/                     # HTML5/CSS3/JS presentation layer
 │   └── [name]_view.php
-└── data/                      # Base de datos SQLite y recursos locales
+└── data/                      # Local SQLite database and seed storage
     └── .gitkeep
 ```
 
-- **Modelo (Model):** Gestiona los datos, las reglas de negocio y las consultas SQL (usando `PDO::ATTR_ERRMODE => ERRMODE_EXCEPTION` y sentencias preparadas contra inyección SQL). Las tablas se crean y auto-pueblan automáticamente si la base de datos no existe.
-- **Vista (View):** Componentes visuales limpios, accesibles y responsivos construidos con **Bootstrap 5.3**, **Bootstrap Icons** y **Chart.js**.
-- **Controlador (Controller):** Recibe las peticiones HTTP (`GET`/`POST`), valida los datos de entrada, invoca los métodos del modelo y prepara la información que la vista renderiza.
+- **Model:** Encapsulates business logic, data rules, and SQL interactions using `PDO` prepared statements (with `PDO::ATTR_ERRMODE => ERRMODE_EXCEPTION` to prevent SQL injection). Tables are automatically created and seeded on first run if the SQLite file is empty.
+- **View:** Clean, accessible, and responsive user interfaces built with **Bootstrap 5.3**, **Bootstrap Icons**, and **Chart.js**.
+- **Controller:** Receives and validates incoming HTTP requests (`GET`/`POST`), interacts with the model, and passes formatted data to the view for rendering.
 
 ---
 
-## 🛠️ Requisitos del Entorno
+## 🛠️ Environment Requirements
 
-- **PHP 8.0** o superior (recomendado PHP 8.2).
-- Extensiones estándar habilitadas (incluidas por defecto en XAMPP):
+- **PHP 8.0** or higher (PHP 8.2 recommended).
+- Standard extensions enabled (included by default in XAMPP):
   - `pdo`
   - `pdo_sqlite`
   - `session`
@@ -61,94 +61,93 @@ Cada ejercicio cuenta con su propia estructura independiente y desacoplada:
 
 ---
 
-## 💻 Instrucciones de Instalación y Ejecución
+## 💻 Installation & Execution Instructions
 
-### Opción 1: Con XAMPP (Apache)
-1. Coloca o clona esta carpeta en tu directorio `htdocs` de XAMPP:
+### Option 1: Using XAMPP (Apache)
+1. Place or clone this repository into your XAMPP `htdocs` directory:
    ```bash
    cd c:\xampp\htdocs
    git clone https://github.com/manolo700/Ejercicios-seguimiento-PHP "SEGUIMIENTO PHP"
    ```
-2. Inicia el servidor Apache desde el panel de control de XAMPP.
-3. Abre tu navegador y accede al portal central:
+2. Start the Apache web server from the XAMPP Control Panel.
+3. Open your browser and navigate to the root dashboard:
    ```text
    http://localhost/SEGUIMIENTO%20PHP/
    ```
 
-### Opción 2: Con el Servidor Integrado de PHP
-1. Abre tu terminal o consola en la carpeta raíz del proyecto:
+### Option 2: Using the Built-in PHP Development Server
+1. Open your terminal in the root directory of the project:
    ```bash
    cd "c:\xampp\htdocs\SEGUIMIENTO PHP"
    php -S localhost:8000
    ```
-2. Abre tu navegador en:
+2. Navigate in your browser to:
    ```text
    http://localhost:8000
    ```
 
 ---
 
-## 📌 Detalle de Funcionalidades por Módulo
+## 📌 Module Feature Overview
 
-1. **Lista de Tareas:**
-   - Creación de tareas con niveles de prioridad (Alta, Media, Baja).
-   - Marcado de completado / desmarcado en tiempo real.
-   - Filtros por pestañas (Todas, Pendientes, Completadas).
-   - Eliminación individual y limpieza masiva de completadas.
+1. **Task List (To-Do):**
+   - Create tasks with priority tiers (High, Medium, Low).
+   - Real-time completion toggle.
+   - Status filters (All, Pending, Completed).
+   - Single-task deletion and batch purge of completed tasks.
 
-2. **Calculadora de Propinas:**
-   - Selección rápida de porcentajes habituales (10%, 15%, 18%, 20%) o personalizado.
-   - División de la cuenta entre múltiples personas.
-   - Opción para redondear al entero superior.
-   - Desglose del total por persona y registro histórico de cuentas.
+2. **Tip Calculator:**
+   - Preset tip percentages (10%, 15%, 18%, 20%) or custom input.
+   - Bill splitting among multiple people.
+   - Optional rounding up to the nearest integer.
+   - Per-person summary and calculation history log.
 
-3. **Generador de Contraseñas Seguras:**
-   - Ajuste de longitud de 6 a 64 caracteres.
-   - Selección de juegos de caracteres (mayúsculas, minúsculas, números, símbolos).
-   - Filtro de caracteres ambiguos (0, O, 1, l, I).
-   - Medidor de entropía y nivel de seguridad criptográfica con botón de copiado al portapapeles.
+3. **Secure Password Generator:**
+   - Adjustable length (6 to 64 characters).
+   - Character sets toggle (uppercase, lowercase, numbers, special symbols).
+   - Option to exclude ambiguous characters (0, O, 1, l, I).
+   - Entropy meter and cryptographic strength feedback with one-click clipboard copy.
 
-4. **Gestor de Gastos:**
-   - Registro de gastos diarios con concepto, monto, categoría y notas.
-   - Desglose mensual y cálculo automático de promedio diario, total mensual y mayor gasto.
-   - Barras de distribución porcentual por categorías.
+4. **Expense Manager:**
+   - Daily expense logging with title, amount, category, date, and notes.
+   - Monthly breakdown with statistics (daily average, monthly total, peak expense).
+   - Visual category distribution progress bars.
 
-5. **Sistema de Reservas:**
-   - Catálogo de servicios profesionales con precios y duraciones.
-   - Verificación de disponibilidad de horarios en tiempo real (evita colisiones de citas).
-   - Emisión de ticket digital con código único de confirmación (ej: `RES-A1B2C3`).
-   - Opción de cancelación de citas.
+5. **Booking & Reservation System:**
+   - Professional service catalog with pricing and duration.
+   - Real-time slot availability check to prevent double bookings.
+   - Digital ticket generator with a unique confirmation code (e.g., `RES-A1B2C3`).
+   - One-click booking cancellation.
 
-6. **Gestor de Notas:**
-   - Creación y edición de notas tipo post-it con código de color.
-   - Filtro por categorías (Trabajo, Personal, Ideas, Estudio, Urgente).
-   - Fijación de notas importantes al inicio (`pinned`).
-   - Buscador por texto en títulos y contenidos.
+6. **Note Taking App:**
+   - Rich sticky-note style card creation with color tagging.
+   - Category filtering (Work, Personal, Ideas, Study, Urgent).
+   - Note pinning to keep important items at the top.
+   - Instant search across note titles and content.
 
-7. **Calendario de Eventos:**
-   - Vista mensual interactiva tipo calendario de cuadrícula.
-   - Registro, edición y eliminación de eventos con colores personalizados.
-   - Recordatorios automáticos con panel de alertas para los próximos 7 días.
+7. **Interactive Event Calendar:**
+   - Monthly interactive grid calendar with previous/next month navigation.
+   - Add, edit, and delete events with color categories.
+   - Automatic reminder badge and upcoming 7-day alerts list.
 
-8. **Plataforma de Recetas:**
-   - Fichas culinarias completas (ingredientes, preparación paso a paso, fotos, tiempo, porciones).
-   - Buscador por ingredientes y filtro por categoría (Desayuno, Almuerzo, Cena, Postre, Snack).
-   - Formulario para publicar nuevas recetas en la comunidad.
+8. **Recipe Sharing Platform:**
+   - Detailed recipe cards (prep time, cook time, servings, step-by-step instructions, ingredients).
+   - Search by recipe name or ingredients, plus category filters (Breakfast, Lunch, Dinner, Dessert, Snack).
+   - Interactive recipe creation modal.
 
-9. **Juego de Memoria:**
-   - Volteo de cartas con animación 3D (`CSS preserve-3d`).
-   - 3 dificultades: Fácil (12 cartas), Medio (16 cartas) y Difícil (24 cartas).
-   - Contador de movimientos, cronómetro activo y cálculo de puntaje.
-   - Tabla de récords (Hall of Fame) con los mejores puntajes guardados.
+9. **Memory Match Card Game:**
+   - Smooth 3D card flipping animations (`CSS preserve-3d`).
+   - 3 difficulty levels: Easy (12 cards), Medium (16 cards), Hard (24 cards).
+   - Active move counter, timer, and score calculation.
+   - Hall of Fame leaderboard persisted in SQLite.
 
-10. **Plataforma de Encuestas:**
-    - Creación dinámica de encuestas con opciones múltiples.
-    - Votación protegida por token de sesión único (un voto por usuario).
-    - Estadísticas porcentuales y generación de informes visuales con gráficos interactivos de **Chart.js**.
+10. **Survey & Polling Platform:**
+    - Dynamic poll creation with custom multiple-choice options.
+    - Session-token vote protection (prevents duplicate voting).
+    - Real-time percentage breakdowns and interactive bar charts powered by **Chart.js**.
 
-11. **Cronómetro Online:**
-    - Display digital de alta precisión (horas, minutos, segundos y centésimas).
-    - Controles de Iniciar, Pausar, Reanudar y Reiniciar.
-    - Registro de vueltas / tiempos parciales con detección automática de vuelta más rápida (verde) y más lenta (rojo).
-    - Exportación de las vueltas registradas a archivo CSV y guardado en base de datos.
-
+11. **High-Precision Online Stopwatch:**
+    - Digital time display with millisecond precision (hours, minutes, seconds, hundredths).
+    - Start, Pause, Resume, and Reset controls.
+    - Lap / split time recording with automatic fastest (green) and slowest (red) lap highlighting.
+    - CSV export for recorded lap times and database session persistence.

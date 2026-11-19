@@ -1,13 +1,17 @@
 <?php
+/**
+ * Note Model
+ * Manages sticky notes, categories, priority pinning, and database searches.
+ */
 class Note {
     private PDO $db;
 
     public const CATEGORIES = [
-        'Trabajo' => ['color' => 'blue', 'icon' => 'bi-briefcase'],
-        'Personal' => ['color' => 'green', 'icon' => 'bi-person'],
-        'Ideas' => ['color' => 'yellow', 'icon' => 'bi-lightbulb'],
-        'Estudio' => ['color' => 'purple', 'icon' => 'bi-mortarboard'],
-        'Urgente' => ['color' => 'red', 'icon' => 'bi-exclamation-triangle']
+        'Work' => ['color' => 'blue', 'icon' => 'bi-briefcase', 'es' => 'Trabajo'],
+        'Personal' => ['color' => 'green', 'icon' => 'bi-person', 'es' => 'Personal'],
+        'Ideas' => ['color' => 'yellow', 'icon' => 'bi-lightbulb', 'es' => 'Ideas'],
+        'Study' => ['color' => 'purple', 'icon' => 'bi-mortarboard', 'es' => 'Estudio'],
+        'Urgent' => ['color' => 'red', 'icon' => 'bi-exclamation-triangle', 'es' => 'Urgente']
     ];
 
     public const COLORS = [
@@ -23,10 +27,10 @@ class Note {
         $this->db = new PDO('sqlite:' . $dbPath);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        $this->initTable();
+        $this->initializeTable();
     }
 
-    private function initTable(): void {
+    private function initializeTable(): void {
         $sql = "CREATE TABLE IF NOT EXISTS notes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -39,16 +43,19 @@ class Note {
         )";
         $this->db->exec($sql);
 
-        // Preload sample notes if empty
+        // Preload sample notes if table is empty
         $count = (int)$this->db->query("SELECT COUNT(*) FROM notes")->fetchColumn();
         if ($count === 0) {
-            $this->create('Proyecto Final PHP MVC', 'Implementar los 11 ejercicios con arquitectura modelo-vista-controlador completa y diseño responsivo.', 'Estudio', 'purple', true);
-            $this->create('Idea de Aplicación Móvil', 'Crear una herramienta que sincronice recetas y listas de compras automáticamente.', 'Ideas', 'yellow', false);
-            $this->create('Renovación de Licencia', 'Agendar cita antes de fin de mes para renovación de documentos personales.', 'Urgente', 'red', true);
-            $this->create('Reunión de Sincronización', 'Presentar avances del sprint el próximo lunes a las 10:00 AM con el equipo técnico.', 'Trabajo', 'blue', false);
+            $this->create('PHP MVC Final Project', 'Implement all 11 modules following clean Model-View-Controller architecture and responsive design.', 'Study', 'purple', true);
+            $this->create('Mobile App Idea', 'Create a tool that automatically synchronizes cooking recipes and shopping lists.', 'Ideas', 'yellow', false);
+            $this->create('License Renewal', 'Schedule appointment before the end of the month for document renewal.', 'Urgent', 'red', true);
+            $this->create('Weekly Sync Meeting', 'Present sprint deliverables next Monday at 10:00 AM with technical lead.', 'Work', 'blue', false);
         }
     }
 
+    /**
+     * Retrieve all notes with optional keyword search and category filter.
+     */
     public function getAll(string $search = '', string $category = ''): array {
         $sql = "SELECT * FROM notes WHERE 1=1";
         $params = [];
@@ -58,9 +65,19 @@ class Note {
             $params[':search'] = '%' . trim($search) . '%';
         }
 
-        if (trim($category) !== '' && array_key_exists($category, self::CATEGORIES)) {
-            $sql .= " AND category = :cat";
-            $params[':cat'] = $category;
+        if (trim($category) !== '') {
+            $matched = $category;
+            if (!array_key_exists($category, self::CATEGORIES)) {
+                foreach (self::CATEGORIES as $key => $meta) {
+                    if ($category === $meta['es']) {
+                        $matched = $key;
+                        break;
+                    }
+                }
+            }
+            $sql .= " AND (category = :cat OR category = :cat_es)";
+            $params[':cat'] = $matched;
+            $params[':cat_es'] = self::CATEGORIES[$matched]['es'] ?? $matched;
         }
 
         $sql .= " ORDER BY is_pinned DESC, updated_at DESC, id DESC";
@@ -78,14 +95,15 @@ class Note {
     }
 
     public function create(string $title, string $content, string $category, string $color = 'yellow', bool $pinned = false): bool {
-        if (trim($title) === '') return false;
+        $title = trim($title);
+        if ($title === '') return false;
         if (!array_key_exists($category, self::CATEGORIES)) $category = 'Personal';
         if (!array_key_exists($color, self::COLORS)) $color = 'yellow';
 
         $stmt = $this->db->prepare("INSERT INTO notes (title, content, category, color, is_pinned, updated_at) 
             VALUES (:title, :content, :category, :color, :pinned, CURRENT_TIMESTAMP)");
         return $stmt->execute([
-            ':title' => trim($title),
+            ':title' => $title,
             ':content' => trim($content),
             ':category' => $category,
             ':color' => $color,
@@ -94,7 +112,8 @@ class Note {
     }
 
     public function update(int $id, string $title, string $content, string $category, string $color = 'yellow', bool $pinned = false): bool {
-        if (trim($title) === '') return false;
+        $title = trim($title);
+        if ($title === '') return false;
         if (!array_key_exists($category, self::CATEGORIES)) $category = 'Personal';
         if (!array_key_exists($color, self::COLORS)) $color = 'yellow';
 
@@ -108,7 +127,7 @@ class Note {
             WHERE id = :id");
         return $stmt->execute([
             ':id' => $id,
-            ':title' => trim($title),
+            ':title' => $title,
             ':content' => trim($content),
             ':category' => $category,
             ':color' => $color,
@@ -130,9 +149,14 @@ class Note {
         $stmt = $this->db->query("SELECT category, COUNT(*) as count FROM notes GROUP BY category");
         $counts = [];
         while ($row = $stmt->fetch()) {
-            $counts[$row['category']] = (int)$row['count'];
+            $catKey = $row['category'];
+            foreach (self::CATEGORIES as $key => $meta) {
+                if ($catKey === $key || $catKey === $meta['es']) {
+                    $counts[$key] = ($counts[$key] ?? 0) + (int)$row['count'];
+                    break;
+                }
+            }
         }
         return $counts;
     }
 }
-

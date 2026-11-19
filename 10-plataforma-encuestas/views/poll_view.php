@@ -1,5 +1,5 @@
 <?php
-$pageTitle = '10 - Plataforma de Encuestas';
+$pageTitle = '10 - Online Survey & Polling Platform';
 $activeExercise = 10;
 $depth = 1;
 require __DIR__ . '/../../shared/header.php';
@@ -15,19 +15,19 @@ require __DIR__ . '/../../shared/header.php';
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div>
                     <span class="mvc-badge mb-2 d-inline-block">
-                        <i class="bi bi-diagram-3-fill me-1"></i> Arquitectura MVC (Model: Poll, View: poll_view, Controller: PollController)
+                        <i class="bi bi-diagram-3-fill me-1"></i> MVC Architecture (Model: Poll, View: poll_view, Controller: PollController)
                     </span>
                     <h2 class="h3 fw-bold mb-1">
-                        <i class="bi bi-bar-chart-line text-primary me-2"></i>Plataforma de Encuestas & Análisis de Opinión
+                        <i class="bi bi-bar-chart-line text-primary me-2"></i>Online Polling & Survey Platform
                     </h2>
                     <p class="text-muted mb-0 small">
-                        Crea votaciones públicas, recopila respuestas en tiempo real y visualiza gráficos estadísticos dinámicos.
+                        Create public polls, gather responses in real time, and view visual statistical charts.
                     </p>
                 </div>
                 <div>
                     <button class="btn btn-brand px-3 py-2 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#newPollModal">
                         <i class="bi bi-plus-circle"></i>
-                        <span>Crear Encuesta</span>
+                        <span>New Poll</span>
                     </button>
                 </div>
             </div>
@@ -40,12 +40,12 @@ require __DIR__ . '/../../shared/header.php';
             <div class="card app-card border-0 mb-4">
                 <div class="card-header bg-white border-bottom py-3">
                     <h5 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-collection text-primary me-2"></i>Encuestas Activas
+                        <i class="bi bi-collection text-primary me-2"></i>Active Polls
                     </h5>
                 </div>
                 <div class="card-body p-0">
                     <?php if (empty($polls)): ?>
-                        <div class="p-4 text-center text-muted small">No hay encuestas creadas.</div>
+                        <div class="p-4 text-center text-muted small">No polls created yet.</div>
                     <?php else: ?>
                         <div class="list-group list-group-flush">
                             <?php foreach ($polls as $p): ?>
@@ -53,13 +53,13 @@ require __DIR__ . '/../../shared/header.php';
                                 <a href="index.php?poll_id=<?= $p['id'] ?>" class="list-group-item list-group-item-action p-3 <?= $isSelected ? 'bg-primary-subtle text-primary border-primary' : '' ?>">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <span class="badge bg-light text-dark border small"><?= htmlspecialchars($p['category']) ?></span>
-                                        <span class="badge bg-secondary-subtle text-secondary small"><?= $p['total_votes'] ?> votos</span>
+                                        <span class="badge bg-secondary-subtle text-secondary small"><?= $p['total_votes'] ?> votes</span>
                                     </div>
                                     <div class="fw-bold text-dark <?= $isSelected ? 'text-primary' : '' ?>">
                                         <?= htmlspecialchars($p['title']) ?>
                                     </div>
                                     <div class="small text-muted mt-1">
-                                        <i class="bi bi-clock me-1"></i><?= date('d/m/Y', strtotime($p['created_at'])) ?>
+                                        <i class="bi bi-clock me-1"></i><?= date('M d, Y', strtotime($p['created_at'])) ?>
                                     </div>
                                 </a>
                             <?php endforeach; ?>
@@ -76,9 +76,9 @@ require __DIR__ . '/../../shared/header.php';
                     <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
                         <div>
                             <span class="badge bg-primary me-2"><?= htmlspecialchars($activePoll['category']) ?></span>
-                            <span class="small text-muted"><i class="bi bi-people-fill me-1"></i><?= $activePoll['total_votes'] ?> votos totales</span>
+                            <span class="small text-muted"><i class="bi bi-people-fill me-1"></i><?= $activePoll['total_votes'] ?> total votes</span>
                         </div>
-                        <a href="index.php?action=delete&id=<?= $activePoll['id'] ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar esta encuesta?');">
+                        <a href="index.php?action=delete&id=<?= $activePoll['id'] ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this poll?');">
                             <i class="bi bi-trash"></i>
                         </a>
                     </div>
@@ -93,7 +93,7 @@ require __DIR__ . '/../../shared/header.php';
                         <?php if (!$hasVoted): ?>
                             <form action="index.php?action=vote" method="POST" class="mb-4 p-3 bg-light rounded-4 border">
                                 <input type="hidden" name="poll_id" value="<?= $activePoll['id'] ?>">
-                                <h6 class="fw-bold mb-3 text-primary"><i class="bi bi-check-circle me-1"></i>Selecciona tu respuesta:</h6>
+                                <h6 class="fw-bold mb-3 text-primary"><i class="bi bi-check-circle me-1"></i>Select your answer:</h6>
                                 
                                 <div class="d-flex flex-column gap-2 mb-3">
                                     <?php foreach ($activePoll['options'] as $idx => $opt): ?>
@@ -107,24 +107,24 @@ require __DIR__ . '/../../shared/header.php';
                                 </div>
 
                                 <button type="submit" class="btn btn-brand px-4 py-2">
-                                    <i class="bi bi-send-fill me-1"></i> Enviar mi Voto
+                                    <i class="bi bi-send-fill me-1"></i> Submit Vote
                                 </button>
                             </form>
                         <?php else: ?>
                             <div class="alert alert-info border-0 rounded-4 d-flex align-items-center gap-2 mb-4">
                                 <i class="bi bi-info-circle-fill fs-5"></i>
-                                <span>Ya has registrado tu voto en esta encuesta. A continuación se presentan las estadísticas consolidadas.</span>
+                                <span>You have already registered your vote in this poll. See the consolidated statistics below.</span>
                             </div>
                         <?php endif; ?>
 
                         <!-- Visual Breakdown / Progress Bars -->
-                        <h5 class="fw-bold mb-3"><i class="bi bi-graph-up me-2 text-primary"></i>Resultados Detallados</h5>
+                        <h5 class="fw-bold mb-3"><i class="bi bi-graph-up me-2 text-primary"></i>Detailed Results</h5>
                         <div class="d-flex flex-column gap-3 mb-4">
                             <?php foreach ($activePoll['options'] as $opt): ?>
                                 <div>
                                     <div class="d-flex justify-content-between align-items-center fw-bold small mb-1">
                                         <span><?= htmlspecialchars($opt['option_text']) ?></span>
-                                        <span><?= $opt['votes'] ?> votos (<?= $opt['percent'] ?>%)</span>
+                                        <span><?= $opt['votes'] ?> votes (<?= $opt['percent'] ?>%)</span>
                                     </div>
                                     <div class="progress" style="height: 12px; border-radius: 6px;">
                                         <div class="progress-bar bg-primary" role="progressbar" style="width: <?= $opt['percent'] ?>%;"></div>
@@ -135,7 +135,7 @@ require __DIR__ . '/../../shared/header.php';
 
                         <!-- Visual Chart Canvas -->
                         <div class="p-3 bg-light rounded-4 border">
-                            <h6 class="fw-bold text-center mb-3">Gráfico Estadístico Visual</h6>
+                            <h6 class="fw-bold text-center mb-3">Visual Distribution Chart</h6>
                             <div style="max-height: 280px; position: relative;">
                                 <canvas id="pollChart"></canvas>
                             </div>
@@ -146,7 +146,7 @@ require __DIR__ . '/../../shared/header.php';
                 <div class="card app-card border-0 text-center py-5">
                     <div class="card-body">
                         <i class="bi bi-bar-chart display-3 text-muted"></i>
-                        <h5 class="mt-3">Selecciona o crea una encuesta</h5>
+                        <h5 class="mt-3">Select or create a poll</h5>
                     </div>
                 </div>
             <?php endif; ?>
@@ -160,48 +160,48 @@ require __DIR__ . '/../../shared/header.php';
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-bottom">
                 <h5 class="modal-title fw-bold">
-                    <i class="bi bi-plus-circle text-primary me-2"></i>Nueva Encuesta
+                    <i class="bi bi-plus-circle text-primary me-2"></i>New Poll
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form action="index.php?action=create" method="POST">
                 <div class="modal-body p-4">
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Pregunta o Título de la Encuesta</label>
-                        <input type="text" name="title" class="form-control" placeholder="¿Cuál es tu opinión sobre...?" required>
+                        <label class="form-label small fw-bold">Question / Poll Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g. Which web framework do you prefer?" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Descripción (Opcional)</label>
-                        <textarea name="description" rows="2" class="form-control" placeholder="Contexto adicional..."></textarea>
+                        <label class="form-label small fw-bold">Description (Optional)</label>
+                        <textarea name="description" rows="2" class="form-control" placeholder="Additional context..."></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Categoría</label>
+                        <label class="form-label small fw-bold">Category</label>
                         <select name="category" class="form-select">
-                            <option value="Tecnología">Tecnología</option>
-                            <option value="Educación">Educación</option>
-                            <option value="Trabajo">Trabajo</option>
-                            <option value="Estilo de Vida">Estilo de Vida</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Education">Education</option>
+                            <option value="Work">Work</option>
+                            <option value="Lifestyle">Lifestyle</option>
                             <option value="General">General</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <label class="form-label small fw-bold mb-0">Opciones de Respuesta</label>
+                            <label class="form-label small fw-bold mb-0">Answer Options</label>
                             <button type="button" class="btn btn-sm btn-outline-primary" id="btnAddOption">
-                                <i class="bi bi-plus"></i> Añadir opción
+                                <i class="bi bi-plus"></i> Add option
                             </button>
                         </div>
                         <div id="optionsContainer" class="d-flex flex-column gap-2">
-                            <input type="text" name="options[]" class="form-control form-control-sm" placeholder="Opción 1" required>
-                            <input type="text" name="options[]" class="form-control form-control-sm" placeholder="Opción 2" required>
-                            <input type="text" name="options[]" class="form-control form-control-sm" placeholder="Opción 3">
+                            <input type="text" name="options[]" class="form-control form-control-sm" placeholder="Option 1" required>
+                            <input type="text" name="options[]" class="form-control form-control-sm" placeholder="Option 2" required>
+                            <input type="text" name="options[]" class="form-control form-control-sm" placeholder="Option 3">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-light border-top">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-brand">Publicar Encuesta</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-brand">Publish Poll</button>
                 </div>
             </form>
         </div>
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
             input.type = 'text';
             input.name = 'options[]';
             input.className = 'form-control form-control-sm';
-            input.placeholder = 'Opción ' + count;
+            input.placeholder = 'Option ' + count;
             container.appendChild(input);
         });
     }
@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Votos',
+                    label: 'Votes',
                     data: data,
                     backgroundColor: [
                         '#4f46e5', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'
@@ -265,4 +265,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
-

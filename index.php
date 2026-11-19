@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Portafolio de Ejercicios PHP MVC';
+$pageTitle = 'PHP MVC Exercises Portfolio';
 $activeExercise = 0;
 $depth = 0;
 require __DIR__ . '/shared/header.php';
@@ -7,121 +7,121 @@ require __DIR__ . '/shared/header.php';
 $exercisesList = [
     [
         'id' => 1,
-        'title' => 'Lista de Tareas',
+        'title' => 'Task List',
         'folder' => '01-lista-tareas',
         'icon' => 'bi-check2-square',
         'color' => 'primary',
-        'desc' => 'Aplicación interactiva que permite a los usuarios agregar, eliminar y marcar tareas completadas con filtrado y persistencia en base de datos SQLite.',
+        'desc' => 'Interactive web application allowing users to create, delete, and mark tasks as completed with status filtering and SQLite database persistence.',
         'model' => 'Task',
         'controller' => 'TaskController',
         'view' => 'task_view.php'
     ],
     [
         'id' => 2,
-        'title' => 'Calculadora de Propinas',
+        'title' => 'Tip Calculator',
         'folder' => '02-calculadora-propinas',
         'icon' => 'bi-calculator',
         'color' => 'success',
-        'desc' => 'Calcula automáticamente el monto de propina, total con propina, división equitativa entre comensales y registro histórico de cuentas.',
+        'desc' => 'Automatically calculates tip amount, total bill with tip, per-person split for shared dining, rounding options, and stores recent calculation history.',
         'model' => 'TipCalculator',
         'controller' => 'TipController',
         'view' => 'tip_view.php'
     ],
     [
         'id' => 3,
-        'title' => 'Generador de Contraseñas',
+        'title' => 'Password Generator',
         'folder' => '03-generador-contrasenas',
         'icon' => 'bi-shield-lock',
         'color' => 'warning',
-        'desc' => 'Generador de contraseñas de alta entropía con longitud configurable, control de tipos de caracteres, medidor de seguridad y copia rápida.',
+        'desc' => 'Cryptographically secure password generator with customizable length, character sets (uppercase, lowercase, numbers, symbols), entropy score, and clipboard copy.',
         'model' => 'PasswordGenerator',
         'controller' => 'PasswordController',
         'view' => 'password_view.php'
     ],
     [
         'id' => 4,
-        'title' => 'Gestor de Gastos',
+        'title' => 'Expense Manager',
         'folder' => '04-gestor-gastos',
         'icon' => 'bi-cash-coin',
         'color' => 'danger',
-        'desc' => 'Registro de gastos diarios con categorización, desglose porcentual mensual, promedios diarios e indicadores financieros en tiempo real.',
+        'desc' => 'Track daily expenses by category, view monthly summaries, daily averages, highest expense indicators, and visual percentage breakdowns.',
         'model' => 'Expense',
         'controller' => 'ExpenseController',
         'view' => 'expense_view.php'
     ],
     [
         'id' => 5,
-        'title' => 'Sistema de Reservas',
+        'title' => 'Booking System',
         'folder' => '05-sistema-reservas',
         'icon' => 'bi-calendar-check',
         'color' => 'info',
-        'desc' => 'Plataforma para reservar servicios o citas en línea con verificación de disponibilidad de horarios en tiempo real y emisión de ticket de confirmación.',
+        'desc' => 'Online appointment and service reservation system featuring real-time schedule slot availability checks and digital confirmation vouchers.',
         'model' => 'Booking',
         'controller' => 'BookingController',
         'view' => 'booking_view.php'
     ],
     [
         'id' => 6,
-        'title' => 'Gestor de Notas',
+        'title' => 'Notes Manager',
         'folder' => '06-gestor-notas',
         'icon' => 'bi-journal-text',
         'color' => 'secondary',
-        'desc' => 'Organizador de notas estilo post-it con clasificación por categorías temáticas, fijación prioritaria, paleta de colores y buscador instantáneo.',
+        'desc' => 'Digital sticky-notes board with color themes, category organization, note pinning for priority items, and instant live text search.',
         'model' => 'Note',
         'controller' => 'NoteController',
         'view' => 'note_view.php'
     ],
     [
         'id' => 7,
-        'title' => 'Calendario de Eventos',
+        'title' => 'Event Calendar',
         'folder' => '07-calendario-eventos',
         'icon' => 'bi-calendar-event',
         'color' => 'primary',
-        'desc' => 'Calendario interactivo mensual con cuadrícula de días, CRUD completo de eventos, recordatorios y notificaciones automáticas para los próximos 7 días.',
+        'desc' => 'Interactive monthly calendar grid with complete event management (create, edit, delete), color tags, and automated notification reminders.',
         'model' => 'Event',
         'controller' => 'EventController',
         'view' => 'event_view.php'
     ],
     [
         'id' => 8,
-        'title' => 'Plataforma de Recetas',
+        'title' => 'Recipe Platform',
         'folder' => '08-plataforma-recetas',
         'icon' => 'bi-egg-fried',
         'color' => 'success',
-        'desc' => 'Catálogo culinario con buscador, filtros por tipo de comida o ingredientes, fichas detalladas de preparación y publicación de nuevas recetas.',
+        'desc' => 'Culinary sharing platform to browse, filter by meal type or ingredients, view detailed step-by-step instructions, and publish new cooking recipes.',
         'model' => 'Recipe',
         'controller' => 'RecipeController',
         'view' => 'recipe_view.php'
     ],
     [
         'id' => 9,
-        'title' => 'Juego de Memoria',
+        'title' => 'Memory Game',
         'folder' => '09-juego-memoria',
         'icon' => 'bi-grid-3x3-gap',
         'color' => 'purple',
-        'desc' => 'Juego interactivo de emparejar cartas con animación 3D de volteo, 3 niveles de dificultad, cronómetro, contador de movimientos y tabla de mejores puntajes.',
+        'desc' => 'Classic 3D card-matching memory game with 3 difficulty levels (Easy, Medium, Hard), live stopwatch timer, move counter, and persistent high scores leaderboard.',
         'model' => 'MemoryGame',
         'controller' => 'GameController',
         'view' => 'game_view.php'
     ],
     [
         'id' => 10,
-        'title' => 'Plataforma de Encuestas',
+        'title' => 'Poll Platform',
         'folder' => '10-plataforma-encuestas',
         'icon' => 'bi-bar-chart-line',
         'color' => 'warning',
-        'desc' => 'Sistema para crear y responder encuestas con control de votación por sesión, cálculo de porcentajes y generación de informes visuales con Chart.js.',
+        'desc' => 'Online survey and polling tool allowing users to create questions, vote with session protection, and view dynamic visual reports rendered with Chart.js.',
         'model' => 'Poll',
         'controller' => 'PollController',
         'view' => 'poll_view.php'
     ],
     [
         'id' => 11,
-        'title' => 'Cronómetro Online',
+        'title' => 'Online Stopwatch',
         'folder' => '11-cronometro-online',
         'icon' => 'bi-stopwatch',
         'color' => 'dark',
-        'desc' => 'Cronómetro digital con inicio, pausa, reinicio, captura de vueltas (tiempos parciales), distinción de vuelta más rápida/lenta y exportación a CSV.',
+        'desc' => 'High-precision digital stopwatch with start, pause, resume, reset, lap recording with fastest/slowest lap detection, session saving, and CSV export.',
         'model' => 'Stopwatch',
         'controller' => 'StopwatchController',
         'view' => 'stopwatch_view.php'
@@ -136,28 +136,28 @@ $exercisesList = [
         <div class="row align-items-center position-relative" style="z-index: 2;">
             <div class="col-lg-8">
                 <span class="badge bg-white text-primary px-3 py-2 rounded-pill fw-bold text-uppercase mb-3" style="font-size: 0.75rem; letter-spacing: 0.5px;">
-                    <i class="bi bi-mortarboard-fill me-1"></i> Programación Orientada a la Web con PHP
+                    <i class="bi bi-mortarboard-fill me-1"></i> Web-Oriented Programming with PHP
                 </span>
                 <h1 class="display-5 fw-extrabold mb-3 text-white">
-                    Seguimiento PHP &bull; Arquitectura MVC
+                    PHP Portfolio &bull; MVC Architecture
                 </h1>
                 <p class="lead text-white-50 mb-4" style="max-width: 650px;">
-                    Colección integral de 11 ejercicios prácticos desarrollados bajo el patrón de diseño <strong>Modelo-Vista-Controlador (MVC)</strong>, con persistencia autónoma en SQLite y diseño web moderno y responsivo.
+                    Comprehensive collection of <strong>11 full-stack web applications</strong> developed under the <strong>Model-View-Controller (MVC)</strong> pattern, featuring autonomous SQLite persistence and responsive Bootstrap design.
                 </p>
                 <div class="d-flex flex-wrap gap-2">
-                    <a href="#ejercicios" class="btn btn-warning px-4 py-2 fw-bold d-flex align-items-center gap-2">
-                        <i class="bi bi-grid-fill"></i> Explorar los 11 Ejercicios
+                    <a href="#exercises" class="btn btn-warning px-4 py-2 fw-bold d-flex align-items-center gap-2">
+                        <i class="bi bi-grid-fill"></i> Explore All 11 Exercises
                     </a>
                     <a href="https://github.com/manolo700/Ejercicios-seguimiento-PHP" target="_blank" class="btn btn-outline-light px-4 py-2 fw-semibold d-flex align-items-center gap-2">
-                        <i class="bi bi-github"></i> Ver en GitHub
+                        <i class="bi bi-github"></i> View on GitHub
                     </a>
                 </div>
             </div>
             <div class="col-lg-4 text-center d-none d-lg-block">
                 <div class="p-4 bg-white bg-opacity-10 rounded-4 border border-white border-opacity-25 backdrop-blur">
                     <i class="bi bi-cpu-fill text-warning display-2 mb-3 d-block"></i>
-                    <h5 class="fw-bold mb-1">100% Funcional</h5>
-                    <p class="text-white-50 small mb-0">Base de datos SQLite integrada, sin necesidad de configuración externa.</p>
+                    <h5 class="fw-bold mb-1">100% Functional</h5>
+                    <p class="text-white-50 small mb-0">Autonomous SQLite storage with automatic table initialization and zero external setup needed.</p>
                 </div>
             </div>
         </div>
@@ -170,9 +170,9 @@ $exercisesList = [
                 <div class="p-3 bg-primary-subtle text-primary rounded-3 d-inline-block mb-3" style="width: fit-content;">
                     <i class="bi bi-database-fill-gear fs-3"></i>
                 </div>
-                <h5 class="fw-bold">Modelo (Model)</h5>
+                <h5 class="fw-bold">Model</h5>
                 <p class="text-muted small mb-0">
-                    Encapsula la lógica de negocio, reglas de validación y acceso a datos mediante PDO SQLite con inicialización automática de esquemas.
+                    Encapsulates business rules, data structures, and database persistence using prepared PDO SQLite statements and automatic schema creation.
                 </p>
             </div>
         </div>
@@ -181,9 +181,9 @@ $exercisesList = [
                 <div class="p-3 bg-success-subtle text-success rounded-3 d-inline-block mb-3" style="width: fit-content;">
                     <i class="bi bi-window-sidebar fs-3"></i>
                 </div>
-                <h5 class="fw-bold">Vista (View)</h5>
+                <h5 class="fw-bold">View</h5>
                 <p class="text-muted small mb-0">
-                    Muestra interfaces de usuario intuitivas con Bootstrap 5, Bootstrap Icons, gráficos con Chart.js e interacciones dinámicas.
+                    Renders modern, responsive user interfaces powered by Bootstrap 5, Bootstrap Icons, Chart.js statistics, and dynamic client-side interactions.
                 </p>
             </div>
         </div>
@@ -192,21 +192,21 @@ $exercisesList = [
                 <div class="p-3 bg-warning-subtle text-warning-emphasis rounded-3 d-inline-block mb-3" style="width: fit-content;">
                     <i class="bi bi-diagram-3-fill fs-3"></i>
                 </div>
-                <h5 class="fw-bold">Controlador (Controller)</h5>
+                <h5 class="fw-bold">Controller</h5>
                 <p class="text-muted small mb-0">
-                    Procesa las peticiones HTTP (GET/POST), coordina los modelos y pasa la información necesaria a las vistas correspondientes.
+                    Processes incoming HTTP requests (GET/POST), validates input payloads, orchestrates model operations, and delivers data to views.
                 </p>
             </div>
         </div>
     </div>
 
     <!-- Exercises Grid Section -->
-    <div class="d-flex justify-content-between align-items-center mb-4" id="ejercicios">
+    <div class="d-flex justify-content-between align-items-center mb-4" id="exercises">
         <div>
-            <h3 class="fw-bold mb-1">Catálogo de Ejercicios Realizados</h3>
-            <p class="text-muted small mb-0">Haz clic en "Abrir Aplicación" en cualquiera de los módulos para interactuar con él.</p>
+            <h3 class="fw-bold mb-1">Project Catalog</h3>
+            <p class="text-muted small mb-0">Click "Open Application" on any module below to interact with it.</p>
         </div>
-        <span class="badge bg-primary fs-6 px-3 py-2 rounded-pill">11 / 11 Completados</span>
+        <span class="badge bg-primary fs-6 px-3 py-2 rounded-pill">11 / 11 Completed</span>
     </div>
 
     <div class="row g-4 mb-5">
@@ -216,10 +216,10 @@ $exercisesList = [
                     <div class="p-4 pb-2">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <span class="badge bg-light text-dark border px-3 py-2 rounded-pill font-monospace fw-bold">
-                                Ejercicio #<?= sprintf('%02d', $ex['id']) ?>
+                                Exercise #<?= sprintf('%02d', $ex['id']) ?>
                             </span>
                             <span class="badge bg-success-subtle text-success border border-success-subtle">
-                                <i class="bi bi-check-circle-fill me-1"></i>MVC Activo
+                                <i class="bi bi-check-circle-fill me-1"></i>Active MVC
                             </span>
                         </div>
 
@@ -245,7 +245,7 @@ $exercisesList = [
                     <div class="p-4 pt-0">
                         <hr class="my-3 text-muted opacity-25">
                         <a href="<?= $ex['folder'] ?>/index.php" class="btn btn-brand w-100 d-flex align-items-center justify-content-center gap-2 py-2">
-                            <span>Abrir Aplicación</span>
+                            <span>Open Application</span>
                             <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -258,31 +258,31 @@ $exercisesList = [
     <div class="card app-card border-0 mb-4">
         <div class="card-header bg-white border-bottom py-3">
             <h5 class="card-title mb-0 fw-semibold">
-                <i class="bi bi-terminal text-primary me-2"></i>Instrucciones de Ejecución
+                <i class="bi bi-terminal text-primary me-2"></i>Execution Instructions
             </h5>
         </div>
         <div class="card-body p-4 small">
             <div class="row g-4">
                 <div class="col-md-6">
-                    <h6 class="fw-bold"><i class="bi bi-laptop me-1 text-primary"></i> Opción A: Servidor Apache en XAMPP</h6>
+                    <h6 class="fw-bold"><i class="bi bi-laptop me-1 text-primary"></i> Option A: Apache via XAMPP</h6>
                     <ol class="ps-3 text-muted">
-                        <li>Inicia el módulo <strong>Apache</strong> en el panel de control de XAMPP.</li>
-                        <li>Asegúrate de que la carpeta esté ubicada dentro de <code>htdocs</code>:
+                        <li>Start the <strong>Apache</strong> module in the XAMPP Control Panel.</li>
+                        <li>Ensure this project folder is inside your <code>htdocs</code> directory:
                             <br><code>c:\xampp\htdocs\SEGUIMIENTO PHP</code>
                         </li>
-                        <li>Abre tu navegador web y visita:
+                        <li>Open your browser and visit:
                             <br><a href="http://localhost/SEGUIMIENTO%20PHP/" target="_blank" class="fw-bold">http://localhost/SEGUIMIENTO%20PHP/</a>
                         </li>
                     </ol>
                 </div>
                 <div class="col-md-6">
-                    <h6 class="fw-bold"><i class="bi bi-code-slash me-1 text-success"></i> Opción B: Servidor Integrado de PHP</h6>
+                    <h6 class="fw-bold"><i class="bi bi-code-slash me-1 text-success"></i> Option B: PHP Built-in Server</h6>
                     <ol class="ps-3 text-muted">
-                        <li>Abre una terminal o consola de comandos en este directorio.</li>
-                        <li>Ejecuta el siguiente comando:
+                        <li>Open a terminal or command prompt in this root folder.</li>
+                        <li>Run the following command:
                             <br><code class="d-inline-block p-1 bg-light border rounded">php -S localhost:8000</code>
                         </li>
-                        <li>Abre tu navegador web y visita:
+                        <li>Open your browser and navigate to:
                             <br><a href="http://localhost:8000" target="_blank" class="fw-bold">http://localhost:8000</a>
                         </li>
                     </ol>
@@ -293,4 +293,3 @@ $exercisesList = [
 </div>
 
 <?php require __DIR__ . '/shared/footer.php'; ?>
-

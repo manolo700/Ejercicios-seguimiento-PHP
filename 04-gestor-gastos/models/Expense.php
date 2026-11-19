@@ -1,15 +1,19 @@
 <?php
+/**
+ * Expense Model
+ * Manages daily expenses and monthly financial aggregations.
+ */
 class Expense {
     private PDO $db;
 
     public const CATEGORIES = [
-        'Comida' => ['icon' => 'bi-cup-hot', 'color' => 'danger'],
-        'Transporte' => ['icon' => 'bi-car-front', 'color' => 'primary'],
-        'Vivienda' => ['icon' => 'bi-house-door', 'color' => 'warning'],
-        'Entretenimiento' => ['icon' => 'bi-controller', 'color' => 'purple'],
-        'Salud' => ['icon' => 'bi-heart-pulse', 'color' => 'success'],
-        'Educación' => ['icon' => 'bi-book', 'color' => 'info'],
-        'Otros' => ['icon' => 'bi-tag', 'color' => 'secondary']
+        'Food' => ['icon' => 'bi-cup-hot', 'color' => 'danger', 'es' => 'Comida'],
+        'Transportation' => ['icon' => 'bi-car-front', 'color' => 'primary', 'es' => 'Transporte'],
+        'Housing' => ['icon' => 'bi-house-door', 'color' => 'warning', 'es' => 'Vivienda'],
+        'Entertainment' => ['icon' => 'bi-controller', 'color' => 'purple', 'es' => 'Entretenimiento'],
+        'Health' => ['icon' => 'bi-heart-pulse', 'color' => 'success', 'es' => 'Salud'],
+        'Education' => ['icon' => 'bi-book', 'color' => 'info', 'es' => 'Educación'],
+        'Other' => ['icon' => 'bi-tag', 'color' => 'secondary', 'es' => 'Otros']
     ];
 
     public function __construct() {
@@ -17,10 +21,10 @@ class Expense {
         $this->db = new PDO('sqlite:' . $dbPath);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-        $this->initTable();
+        $this->initializeTable();
     }
 
-    private function initTable(): void {
+    private function initializeTable(): void {
         $sql = "CREATE TABLE IF NOT EXISTS expenses (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -32,7 +36,7 @@ class Expense {
         )";
         $this->db->exec($sql);
 
-        // Seed sample data if empty
+        // Preload sample expense records if database is empty
         $count = (int)$this->db->query("SELECT COUNT(*) FROM expenses")->fetchColumn();
         if ($count === 0) {
             $today = date('Y-m-d');
@@ -40,32 +44,48 @@ class Expense {
             $threeDaysAgo = date('Y-m-d', strtotime('-3 days'));
 
             $samples = [
-                ['Supermercado semanal', 65.50, 'Comida', $today, 'Frutas, verduras y lácteos'],
-                ['Combustible vehículo', 35.00, 'Transporte', $yesterday, 'Gasolina tanque'],
-                ['Pago Servicio de Luz', 42.80, 'Vivienda', $threeDaysAgo, 'Recibo mensual'],
-                ['Cine y palomitas', 18.00, 'Entretenimiento', $yesterday, 'Fin de semana'],
-                ['Farmacia y vitaminas', 22.50, 'Salud', $threeDaysAgo, 'Suplementos']
+                ['Weekly Groceries', 65.50, 'Food', $today, 'Fruits, vegetables, and dairy'],
+                ['Vehicle Fuel', 35.00, 'Transportation', $yesterday, 'Gasoline refill'],
+                ['Electricity Utility Bill', 42.80, 'Housing', $threeDaysAgo, 'Monthly electricity bill'],
+                ['Cinema and Snacks', 18.00, 'Entertainment', $yesterday, 'Weekend movie'],
+                ['Pharmacy & Vitamins', 22.50, 'Health', $threeDaysAgo, 'Daily supplements']
             ];
 
             $stmt = $this->db->prepare("INSERT INTO expenses (title, amount, category, expense_date, notes) VALUES (?, ?, ?, ?, ?)");
-            foreach ($samples as $s) {
-                $stmt->execute($s);
+            foreach ($samples as $sample) {
+                $stmt->execute($sample);
             }
         }
     }
 
+    /**
+     * Add a new expense.
+     */
     public function add(string $title, float $amount, string $category, string $date, string $notes = ''): bool {
-        if (trim($title) === '' || $amount <= 0) return false;
-        if (!array_key_exists($category, self::CATEGORIES)) {
-            $category = 'Otros';
+        $title = trim($title);
+        if ($title === '' || $amount <= 0) {
+            return false;
         }
+
+        if (!array_key_exists($category, self::CATEGORIES)) {
+            // Map Spanish legacy category if needed
+            $matched = 'Other';
+            foreach (self::CATEGORIES as $key => $meta) {
+                if ($category === $meta['es'] || strtolower($category) === strtolower($key)) {
+                    $matched = $key;
+                    break;
+                }
+            }
+            $category = $matched;
+        }
+
         if (empty($date)) {
             $date = date('Y-m-d');
         }
 
         $stmt = $this->db->prepare("INSERT INTO expenses (title, amount, category, expense_date, notes) VALUES (:title, :amount, :cat, :date, :notes)");
         return $stmt->execute([
-            ':title' => trim($title),
+            ':title' => $title,
             ':amount' => $amount,
             ':cat' => $category,
             ':date' => $date,
@@ -73,11 +93,17 @@ class Expense {
         ]);
     }
 
+    /**
+     * Delete an expense by ID.
+     */
     public function delete(int $id): bool {
         $stmt = $this->db->prepare("DELETE FROM expenses WHERE id = :id");
         return $stmt->execute([':id' => $id]);
     }
 
+    /**
+     * Get all expenses for a specific month and year.
+     */
     public function getByMonth(int $year, int $month): array {
         $start = sprintf('%04d-%02d-01', $year, $month);
         $end = date('Y-m-t', strtotime($start));
@@ -87,6 +113,9 @@ class Expense {
         return $stmt->fetchAll();
     }
 
+    /**
+     * Get monthly metrics: total, count, max amount, and daily average.
+     */
     public function getMonthlyStats(int $year, int $month): array {
         $start = sprintf('%04d-%02d-01', $year, $month);
         $end = date('Y-m-t', strtotime($start));
@@ -105,6 +134,9 @@ class Expense {
         return $stats;
     }
 
+    /**
+     * Get breakdown totals per category for a given month.
+     */
     public function getCategoryBreakdown(int $year, int $month): array {
         $start = sprintf('%04d-%02d-01', $year, $month);
         $end = date('Y-m-t', strtotime($start));
@@ -118,4 +150,3 @@ class Expense {
         return $stmt->fetchAll();
     }
 }
-

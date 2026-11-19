@@ -39,12 +39,12 @@ class Stopwatch {
                 ['number' => 2, 'lap_ms' => 42110, 'overall_ms' => 87340],
                 ['number' => 3, 'lap_ms' => 47890, 'overall_ms' => 135230]
             ];
-            $this->saveSession('Sesión de Entrenamiento 1', 135230, $sampleLaps);
+            $this->saveSession('Workout Session 1', 135230, $sampleLaps);
         }
     }
 
     public function saveSession(string $name, int $totalTimeMs, array $laps): int {
-        $name = trim($name) ?: ('Sesión #' . date('d/m H:i'));
+        $name = trim($name) ?: ('Session #' . date('m/d H:i'));
         $totalLaps = count($laps);
 
         $fastest = null;

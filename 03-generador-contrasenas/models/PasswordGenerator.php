@@ -1,4 +1,8 @@
 <?php
+/**
+ * PasswordGenerator Model
+ * Generates cryptographically secure passwords and evaluates entropy.
+ */
 class PasswordGenerator {
     private const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     private const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz';
@@ -93,33 +97,32 @@ class PasswordGenerator {
     private function evaluateStrength(float $entropy, int $length, int $poolCount): array {
         if ($entropy < 35 || $length < 8 || $poolCount < 2) {
             return [
-                'level' => 'Débil',
+                'level' => 'Weak',
                 'color' => 'danger',
                 'percent' => 25,
-                'description' => 'Fácil de vulnerar mediante ataques de fuerza bruta.'
+                'description' => 'Vulnerable to brute-force attacks.'
             ];
         } elseif ($entropy < 55) {
             return [
-                'level' => 'Media',
+                'level' => 'Fair',
                 'color' => 'warning',
                 'percent' => 50,
-                'description' => 'Aceptable para cuentas básicas, pero mejorable.'
+                'description' => 'Acceptable for basic accounts, but can be improved.'
             ];
         } elseif ($entropy < 80) {
             return [
-                'level' => 'Fuerte',
+                'level' => 'Strong',
                 'color' => 'primary',
                 'percent' => 75,
-                'description' => 'Muy resistente, adecuada para la mayoría de servicios.'
+                'description' => 'Resistant and recommended for most web services.'
             ];
         } else {
             return [
-                'level' => 'Excelente / Muy Fuerte',
+                'level' => 'Very Strong',
                 'color' => 'success',
                 'percent' => 100,
-                'description' => 'Prácticamente impenetrable con computación estándar.'
+                'description' => 'Ultra high entropy, virtually impenetrable.'
             ];
         }
     }
 }
-

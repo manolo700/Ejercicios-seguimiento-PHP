@@ -1,5 +1,5 @@
 <?php
-$pageTitle = '08 - Plataforma de Recetas';
+$pageTitle = '08 - Recipe Platform';
 $activeExercise = 8;
 $depth = 1;
 require __DIR__ . '/../../shared/header.php';
@@ -12,19 +12,19 @@ require __DIR__ . '/../../shared/header.php';
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <div>
                     <span class="mvc-badge mb-2 d-inline-block">
-                        <i class="bi bi-diagram-3-fill me-1"></i> Arquitectura MVC (Model: Recipe, View: recipe_view, Controller: RecipeController)
+                        <i class="bi bi-diagram-3-fill me-1"></i> MVC Architecture (Model: Recipe, View: recipe_view, Controller: RecipeController)
                     </span>
                     <h2 class="h3 fw-bold mb-1">
-                        <i class="bi bi-egg-fried text-primary me-2"></i>Plataforma Culinaria & Recetas de Cocina
+                        <i class="bi bi-egg-fried text-primary me-2"></i>Culinary Platform & Cooking Recipes
                     </h2>
                     <p class="text-muted mb-0 small">
-                        Descubre, filtra por tipo de comida o ingredientes, comparte tus creaciones y disfruta de buena cocina.
+                        Discover delicious recipes, filter by meal type or ingredients, and share your favorite culinary dishes.
                     </p>
                 </div>
                 <div>
                     <button class="btn btn-brand px-3 py-2 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#newRecipeModal">
                         <i class="bi bi-plus-circle"></i>
-                        <span>Publicar Receta</span>
+                        <span>Publish Recipe</span>
                     </button>
                 </div>
             </div>
@@ -39,13 +39,13 @@ require __DIR__ . '/../../shared/header.php';
                         <span class="input-group-text bg-light border-end-0">
                             <i class="bi bi-search text-muted"></i>
                         </span>
-                        <input type="text" name="search" class="form-control border-start-0" placeholder="Buscar por título, ingrediente..." value="<?= htmlspecialchars($search) ?>">
-                        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                        <input type="text" name="search" class="form-control border-start-0" placeholder="Search by title, ingredient..." value="<?= htmlspecialchars($search) ?>">
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
                     </form>
                 </div>
                 <div class="col-md-7 d-flex flex-wrap gap-1 align-items-center justify-content-md-end">
                     <a href="index.php" class="btn btn-sm <?= empty($mealType) ? 'btn-primary' : 'btn-outline-secondary' ?> rounded-pill">
-                        Todas las Categorías
+                        All Categories
                     </a>
                     <?php foreach ($mealTypes as $mt): ?>
                         <a href="index.php?meal_type=<?= urlencode($mt) ?><?= !empty($search) ? '&search=' . urlencode($search) : '' ?>" 
@@ -63,10 +63,10 @@ require __DIR__ . '/../../shared/header.php';
         <div class="card app-card border-0 text-center py-5">
             <div class="card-body">
                 <i class="bi bi-search display-3 text-muted"></i>
-                <h5 class="mt-3 text-secondary">No se encontraron recetas</h5>
-                <p class="text-muted small">Intenta buscar con otros términos o crea una receta nueva.</p>
+                <h5 class="mt-3 text-secondary">No recipes found</h5>
+                <p class="text-muted small">Try searching with different keywords or publish a new recipe.</p>
                 <button class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#newRecipeModal">
-                    <i class="bi bi-plus-lg me-1"></i> Publicar una Receta
+                    <i class="bi bi-plus-lg me-1"></i> Publish a Recipe
                 </button>
             </div>
         </div>
@@ -75,9 +75,9 @@ require __DIR__ . '/../../shared/header.php';
             <?php foreach ($recipes as $r): ?>
                 <?php 
                     $diffClass = match($r['difficulty']) {
-                        'Fácil' => 'success',
-                        'Media' => 'warning',
-                        'Avanzada' => 'danger',
+                        'Easy', 'Fácil' => 'success',
+                        'Medium', 'Media' => 'warning',
+                        'Advanced', 'Avanzada' => 'danger',
                         default => 'secondary'
                     };
                 ?>
@@ -98,10 +98,10 @@ require __DIR__ . '/../../shared/header.php';
                             <div class="p-4 pb-2">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
                                     <span class="badge bg-<?= $diffClass ?>-subtle text-<?= $diffClass ?> border border-<?= $diffClass ?>-subtle" style="font-size: 0.7rem;">
-                                        Dificultad: <?= htmlspecialchars($r['difficulty']) ?>
+                                        Difficulty: <?= htmlspecialchars($r['difficulty']) ?>
                                     </span>
                                     <span class="small text-muted">
-                                        <i class="bi bi-people me-1"></i><?= $r['servings'] ?> porciones
+                                        <i class="bi bi-people me-1"></i><?= $r['servings'] ?> servings
                                     </span>
                                 </div>
                                 <h5 class="fw-bold text-dark mt-2 mb-1">
@@ -117,7 +117,7 @@ require __DIR__ . '/../../shared/header.php';
                             <hr class="my-2 text-muted opacity-25">
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="small text-muted" style="font-size: 0.75rem;">
-                                    Por <?= htmlspecialchars($r['author_name']) ?>
+                                    By <?= htmlspecialchars($r['author_name']) ?>
                                 </span>
                                 <div class="d-flex gap-1">
                                     <button type="button" class="btn btn-sm btn-outline-primary view-recipe-btn"
@@ -131,9 +131,9 @@ require __DIR__ . '/../../shared/header.php';
                                             data-author="<?= htmlspecialchars($r['author_name']) ?>"
                                             data-ingredients="<?= htmlspecialchars($r['ingredients']) ?>"
                                             data-instructions="<?= htmlspecialchars($r['instructions']) ?>">
-                                        <i class="bi bi-book-half me-1"></i> Ver Receta
+                                        <i class="bi bi-book-half me-1"></i> View Recipe
                                     </button>
-                                    <a href="index.php?action=delete&id=<?= $r['id'] ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar esta receta?');">
+                                    <a href="index.php?action=delete&id=<?= $r['id'] ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this recipe?');">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
@@ -151,42 +151,42 @@ require __DIR__ . '/../../shared/header.php';
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-bottom">
-                <h5 class="modal-title fw-bold" id="viewRecipeTitle">Título de Receta</h5>
+                <h5 class="modal-title fw-bold" id="viewRecipeTitle">Recipe Title</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4">
                 <div class="row g-4 mb-3">
                     <div class="col-md-5">
-                        <img id="viewRecipeImg" src="" alt="Receta" class="img-fluid rounded-3 shadow-sm w-100" style="max-height: 240px; object-fit: cover;">
+                        <img id="viewRecipeImg" src="" alt="Recipe" class="img-fluid rounded-3 shadow-sm w-100" style="max-height: 240px; object-fit: cover;">
                         <div class="mt-3 p-3 bg-light rounded-3 small">
                             <div class="d-flex justify-content-between mb-1">
-                                <strong>Categoría:</strong> <span id="viewRecipeType"></span>
+                                <strong>Category:</strong> <span id="viewRecipeType"></span>
                             </div>
                             <div class="d-flex justify-content-between mb-1">
-                                <strong>Dificultad:</strong> <span id="viewRecipeDiff"></span>
+                                <strong>Difficulty:</strong> <span id="viewRecipeDiff"></span>
                             </div>
                             <div class="d-flex justify-content-between mb-1">
-                                <strong>Tiempo:</strong> <span id="viewRecipeTime"></span>
+                                <strong>Prep Time:</strong> <span id="viewRecipeTime"></span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <strong>Porciones:</strong> <span id="viewRecipeServings"></span>
+                                <strong>Servings:</strong> <span id="viewRecipeServings"></span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-7">
                         <p class="text-muted" id="viewRecipeDesc"></p>
-                        <h6 class="fw-bold text-primary mt-3"><i class="bi bi-basket me-2"></i>Ingredientes:</h6>
+                        <h6 class="fw-bold text-primary mt-3"><i class="bi bi-basket me-2"></i>Ingredients:</h6>
                         <ul class="list-group list-group-flush small" id="viewRecipeIngredientsList"></ul>
                     </div>
                 </div>
 
                 <div class="mt-4 pt-3 border-top">
-                    <h5 class="fw-bold text-primary mb-3"><i class="bi bi-list-ol me-2"></i>Instrucciones de Preparación:</h5>
+                    <h5 class="fw-bold text-primary mb-3"><i class="bi bi-list-ol me-2"></i>Preparation Steps:</h5>
                     <div id="viewRecipeInstructions" class="p-3 bg-light rounded-3" style="white-space: pre-wrap; line-height: 1.6;"></div>
                 </div>
             </div>
             <div class="modal-footer bg-light border-top">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -198,7 +198,7 @@ require __DIR__ . '/../../shared/header.php';
         <div class="modal-content border-0 shadow">
             <div class="modal-header border-bottom">
                 <h5 class="modal-title fw-bold">
-                    <i class="bi bi-plus-circle text-primary me-2"></i>Publicar Nueva Receta
+                    <i class="bi bi-plus-circle text-primary me-2"></i>Publish New Recipe
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -206,23 +206,23 @@ require __DIR__ . '/../../shared/header.php';
                 <div class="modal-body p-4">
                     <div class="row g-3 mb-3">
                         <div class="col-md-8">
-                            <label class="form-label small fw-bold">Nombre del Platillo</label>
-                            <input type="text" name="title" class="form-control" placeholder="Ej. Risotto de Champiñones" required>
+                            <label class="form-label small fw-bold">Dish Name / Title</label>
+                            <input type="text" name="title" class="form-control" placeholder="e.g., Wild Mushroom Risotto" required>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label small fw-bold">Autor</label>
-                            <input type="text" name="author_name" class="form-control" placeholder="Tu nombre" required>
+                            <label class="form-label small fw-bold">Author Name</label>
+                            <input type="text" name="author_name" class="form-control" placeholder="Your name" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Descripción Breve</label>
-                        <input type="text" name="description" class="form-control" placeholder="Una descripción atractiva para los comensales..." required>
+                        <label class="form-label small fw-bold">Short Description</label>
+                        <input type="text" name="description" class="form-control" placeholder="Appetizing summary of your recipe..." required>
                     </div>
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-3">
-                            <label class="form-label small fw-bold">Tipo de Comida</label>
+                            <label class="form-label small fw-bold">Meal Type</label>
                             <select name="meal_type" class="form-select">
                                 <?php foreach ($mealTypes as $mt): ?>
                                     <option value="<?= $mt ?>"><?= $mt ?></option>
@@ -230,42 +230,42 @@ require __DIR__ . '/../../shared/header.php';
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label small fw-bold">Dificultad</label>
+                            <label class="form-label small fw-bold">Difficulty</label>
                             <select name="difficulty" class="form-select">
-                                <option value="Fácil">Fácil</option>
-                                <option value="Media" selected>Media</option>
-                                <option value="Avanzada">Avanzada</option>
+                                <option value="Easy">Easy</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="Advanced">Advanced</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label small fw-bold">Tiempo (min)</label>
+                            <label class="form-label small fw-bold">Prep Time (min)</label>
                             <input type="number" name="prep_time_minutes" class="form-control" value="30" min="5" required>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label small fw-bold">Porciones</label>
+                            <label class="form-label small fw-bold">Servings</label>
                             <input type="number" name="servings" class="form-control" value="4" min="1" required>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">URL de Imagen (Opcional)</label>
-                        <input type="url" name="image_url" class="form-control" placeholder="https://ejemplo.com/foto.jpg">
+                        <label class="form-label small fw-bold">Image URL (Optional)</label>
+                        <input type="url" name="image_url" class="form-control" placeholder="https://images.unsplash.com/photo-...">
                     </div>
 
                     <div class="row g-3 mb-2">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Ingredientes (uno por línea)</label>
-                            <textarea name="ingredients" rows="5" class="form-control" placeholder="1 taza de arroz&#10;2 tazas de caldo&#10;Sal al gusto..." required></textarea>
+                            <label class="form-label small fw-bold">Ingredients (one per line)</label>
+                            <textarea name="ingredients" rows="5" class="form-control" placeholder="1 cup arborio rice&#10;2 cups warm vegetable broth&#10;Salt & pepper to taste..." required></textarea>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Instrucciones Paso a Paso</label>
-                            <textarea name="instructions" rows="5" class="form-control" placeholder="1. Calentar el aceite...&#10;2. Dorar los ingredientes...&#10;3. Servir caliente." required></textarea>
+                            <label class="form-label small fw-bold">Step-by-Step Instructions</label>
+                            <textarea name="instructions" rows="5" class="form-control" placeholder="1. Sauté onions in olive oil...&#10;2. Add rice and toast lightly...&#10;3. Gradually add broth and stir." required></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer bg-light border-top">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-brand">Publicar Receta</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-brand">Publish Recipe</button>
                 </div>
             </form>
         </div>
@@ -285,8 +285,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('viewRecipeImg').src = this.dataset.img;
             document.getElementById('viewRecipeType').textContent = this.dataset.type;
             document.getElementById('viewRecipeDiff').textContent = this.dataset.diff;
-            document.getElementById('viewRecipeTime').textContent = this.dataset.time + ' minutos';
-            document.getElementById('viewRecipeServings').textContent = this.dataset.servings + ' personas';
+            document.getElementById('viewRecipeTime').textContent = this.dataset.time + ' minutes';
+            document.getElementById('viewRecipeServings').textContent = this.dataset.servings + ' servings';
             document.getElementById('viewRecipeInstructions').textContent = this.dataset.instructions;
 
             const ingList = document.getElementById('viewRecipeIngredientsList');
@@ -310,4 +310,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <?php require __DIR__ . '/../../shared/footer.php'; ?>
-

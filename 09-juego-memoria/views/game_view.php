@@ -68,10 +68,10 @@ require __DIR__ . '/../../shared/header.php';
                         <i class="bi bi-diagram-3-fill me-1"></i> MVC Architecture (Model: MemoryGame, View: game_view, Controller: GameController)
                     </span>
                     <h2 class="h3 fw-bold mb-1">
-                        <i class="bi bi-grid-3x3-gap text-primary me-2"></i>Juego Clásico de Memoria
+                        <i class="bi bi-grid-3x3-gap text-primary me-2"></i>Classic Memory Game
                     </h2>
                     <p class="text-muted mb-0 small">
-                        Encuentra todos los pares de cartas antes de que se agote tu récord. Elige tu nivel de dificultad.
+                        Match all pairs of hidden cards in minimum moves and time. Choose your difficulty level.
                     </p>
                 </div>
 
@@ -79,7 +79,7 @@ require __DIR__ . '/../../shared/header.php';
                 <div class="btn-group" role="group">
                     <?php foreach ($allLevels as $levelKey => $levelData): ?>
                         <a href="index.php?difficulty=<?= $levelKey ?>" class="btn <?= $difficulty === $levelKey ? 'btn-primary' : 'btn-outline-primary' ?> btn-sm px-3 fw-bold">
-                            <?= $levelData['name'] ?> (<?= $levelData['pairs'] ?> pares)
+                            <?= $levelData['name'] ?> (<?= $levelData['pairs'] ?> pairs)
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -91,25 +91,25 @@ require __DIR__ . '/../../shared/header.php';
     <div class="row g-3 mb-4">
         <div class="col-md-3 col-6">
             <div class="card app-card border-0 p-3 text-center">
-                <span class="text-muted small text-uppercase fw-semibold">Movimientos</span>
+                <span class="text-muted small text-uppercase fw-semibold">Moves</span>
                 <span class="fs-3 fw-bold text-dark mt-1" id="movesCounter">0</span>
             </div>
         </div>
         <div class="col-md-3 col-6">
             <div class="card app-card border-0 p-3 text-center">
-                <span class="text-muted small text-uppercase fw-semibold">Tiempo</span>
+                <span class="text-muted small text-uppercase fw-semibold">Time Elapsed</span>
                 <span class="fs-3 fw-bold text-primary mt-1" id="timerDisplay">00:00</span>
             </div>
         </div>
         <div class="col-md-3 col-6">
             <div class="card app-card border-0 p-3 text-center">
-                <span class="text-muted small text-uppercase fw-semibold">Pares Encontrados</span>
+                <span class="text-muted small text-uppercase fw-semibold">Pairs Found</span>
                 <span class="fs-3 fw-bold text-success mt-1"><span id="pairsCounter">0</span> / <?= $levelInfo['pairs'] ?></span>
             </div>
         </div>
         <div class="col-md-3 col-6">
             <div class="card app-card border-0 p-3 text-center">
-                <span class="text-muted small text-uppercase fw-semibold">Puntaje Estimado</span>
+                <span class="text-muted small text-uppercase fw-semibold">Live Score</span>
                 <span class="fs-3 fw-bold text-warning-emphasis mt-1" id="liveScore">1000</span>
             </div>
         </div>
@@ -120,9 +120,9 @@ require __DIR__ . '/../../shared/header.php';
         <div class="col-lg-8">
             <div class="card app-card border-0 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0">Tablero de Juego (<?= $levelInfo['name'] ?>)</h5>
+                    <h5 class="fw-bold mb-0">Game Board (<?= $levelInfo['name'] ?>)</h5>
                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="location.reload();">
-                        <i class="bi bi-arrow-clockwise me-1"></i> Reiniciar
+                        <i class="bi bi-arrow-clockwise me-1"></i> Restart Game
                     </button>
                 </div>
 
@@ -149,13 +149,13 @@ require __DIR__ . '/../../shared/header.php';
             <div class="card app-card border-0">
                 <div class="card-header bg-white border-bottom py-3">
                     <h5 class="card-title mb-0 fw-semibold">
-                        <i class="bi bi-trophy-fill text-warning me-2"></i>Mejores Puntajes (<?= $levelInfo['name'] ?>)
+                        <i class="bi bi-trophy-fill text-warning me-2"></i>Top High Scores (<?= $levelInfo['name'] ?>)
                     </h5>
                 </div>
                 <div class="card-body p-0">
                     <?php if (empty($leaderboard)): ?>
                         <div class="p-4 text-center text-muted small">
-                            Aún no hay récords registrados en este nivel. ¡Sé el primero!
+                            No high scores recorded yet for this level. Be the first!
                         </div>
                     <?php else: ?>
                         <div class="table-responsive">
@@ -163,9 +163,9 @@ require __DIR__ . '/../../shared/header.php';
                                 <thead class="table-light">
                                     <tr>
                                         <th>#</th>
-                                        <th>Jugador</th>
-                                        <th>Puntaje</th>
-                                        <th>Tiempo</th>
+                                        <th>Player</th>
+                                        <th>Score</th>
+                                        <th>Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -195,20 +195,20 @@ require __DIR__ . '/../../shared/header.php';
                 <div class="display-1 text-warning mb-3">
                     <i class="bi bi-award-fill"></i>
                 </div>
-                <h3 class="fw-bold text-success mb-2">¡Felicitaciones, Ganaste!</h3>
-                <p class="text-muted mb-4">Has completado el juego de memoria con éxito.</p>
+                <h3 class="fw-bold text-success mb-2">Congratulations, You Won!</h3>
+                <p class="text-muted mb-4">You have successfully cleared the memory board.</p>
 
                 <div class="row g-2 mb-4 bg-light p-3 rounded-4">
                     <div class="col-4">
-                        <small class="text-muted d-block">Movimientos</small>
+                        <small class="text-muted d-block">Moves</small>
                         <strong class="fs-5" id="modalMoves">0</strong>
                     </div>
                     <div class="col-4">
-                        <small class="text-muted d-block">Tiempo</small>
+                        <small class="text-muted d-block">Time</small>
                         <strong class="fs-5" id="modalTime">0s</strong>
                     </div>
                     <div class="col-4">
-                        <small class="text-muted d-block">Puntaje</small>
+                        <small class="text-muted d-block">Final Score</small>
                         <strong class="fs-5 text-primary" id="modalScore">0</strong>
                     </div>
                 </div>
@@ -220,16 +220,16 @@ require __DIR__ . '/../../shared/header.php';
                     <input type="hidden" name="score" id="inputScore" value="0">
 
                     <div class="mb-3 text-start">
-                        <label class="form-label small fw-bold">Escribe tu nombre para la tabla de líderes:</label>
-                        <input type="text" name="player_name" class="form-control form-control-lg" placeholder="Tu nombre..." required autofocus>
+                        <label class="form-label small fw-bold">Enter your name for the leaderboard:</label>
+                        <input type="text" name="player_name" class="form-control form-control-lg" placeholder="Your name..." required autofocus>
                     </div>
 
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-brand py-2 fs-5">
-                            <i class="bi bi-save me-1"></i> Guardar Mi Récord
+                            <i class="bi bi-save me-1"></i> Save My High Score
                         </button>
                         <a href="index.php?difficulty=<?= $difficulty ?>" class="btn btn-outline-secondary">
-                            Jugar de Nuevo
+                            Play Again
                         </a>
                     </div>
                 </form>
