@@ -1,47 +1,47 @@
-# PHP Coursework Exercises - MVC Architecture
+﻿# PHP Coursework Exercises - MVC Architecture
 
 Official repository for the **Web-Oriented Programming with PHP** course. This project contains **11 complete web applications**, all implemented following the architectural design pattern **Model-View-Controller (MVC)**, featuring responsive interactive user interfaces and zero-configuration SQLite (PDO) persistence.
 
 ---
 
-## 🚀 GitHub Repository
+## ðŸš€ GitHub Repository
 [https://github.com/manolo700/Ejercicios-seguimiento-PHP](https://github.com/manolo700/Ejercicios-seguimiento-PHP)
 
 ---
 
-## 📋 Catalog of the 11 Exercises
+## ðŸ“‹ Catalog of the 11 Exercises
 
 | # | Exercise | Folder | Model | Controller | View |
 |---|----------|--------|-------|------------|------|
-| 1 | **Task List (To-Do)** | `01-lista-tareas/` | `Task.php` | `TaskController.php` | `task_view.php` |
-| 2 | **Tip Calculator** | `02-calculadora-propinas/` | `TipCalculator.php` | `TipController.php` | `tip_view.php` |
-| 3 | **Secure Password Generator** | `03-generador-contrasenas/` | `PasswordGenerator.php` | `PasswordController.php` | `password_view.php` |
-| 4 | **Expense Manager** | `04-gestor-gastos/` | `Expense.php` | `ExpenseController.php` | `expense_view.php` |
-| 5 | **Booking & Reservation System** | `05-sistema-reservas/` | `Booking.php` | `BookingController.php` | `booking_view.php` |
-| 6 | **Note Taking App** | `06-gestor-notas/` | `Note.php` | `NoteController.php` | `note_view.php` |
-| 7 | **Interactive Event Calendar** | `07-calendario-eventos/` | `Event.php` | `EventController.php` | `event_view.php` |
-| 8 | **Recipe Sharing Platform** | `08-plataforma-recetas/` | `Recipe.php` | `RecipeController.php` | `recipe_view.php` |
-| 9 | **Memory Match Card Game** | `09-juego-memoria/` | `MemoryGame.php` | `GameController.php` | `game_view.php` |
-| 10 | **Survey & Polling Platform** | `10-plataforma-encuestas/` | `Poll.php` | `PollController.php` | `poll_view.php` |
-| 11 | **High-Precision Online Stopwatch** | `11-cronometro-online/` | `Stopwatch.php` | `StopwatchController.php` | `stopwatch_view.php` |
+| 1 | **Task List (To-Do)** | `01-task-list/` | `Task.php` | `TaskController.php` | `task_view.php` |
+| 2 | **Tip Calculator** | `02-tip-calculator/` | `TipCalculator.php` | `TipController.php` | `tip_view.php` |
+| 3 | **Secure Password Generator** | `03-password-generator/` | `PasswordGenerator.php` | `PasswordController.php` | `password_view.php` |
+| 4 | **Expense Manager** | `04-expense-manager/` | `Expense.php` | `ExpenseController.php` | `expense_view.php` |
+| 5 | **Booking & Reservation System** | `05-booking-system/` | `Booking.php` | `BookingController.php` | `booking_view.php` |
+| 6 | **Note Taking App** | `06-notes-manager/` | `Note.php` | `NoteController.php` | `note_view.php` |
+| 7 | **Interactive Event Calendar** | `07-event-calendar/` | `Event.php` | `EventController.php` | `event_view.php` |
+| 8 | **Recipe Sharing Platform** | `08-recipe-platform/` | `Recipe.php` | `RecipeController.php` | `recipe_view.php` |
+| 9 | **Memory Match Card Game** | `09-memory-game/` | `MemoryGame.php` | `GameController.php` | `game_view.php` |
+| 10 | **Survey & Polling Platform** | `10-poll-platform/` | `Poll.php` | `PollController.php` | `poll_view.php` |
+| 11 | **High-Precision Online Stopwatch** | `11-online-stopwatch/` | `Stopwatch.php` | `StopwatchController.php` | `stopwatch_view.php` |
 
 ---
 
-## 🏗️ MVC Architecture Design
+## ðŸ—ï¸ MVC Architecture Design
 
 Each exercise is organized under a decoupled and self-contained structure:
 
 ```text
 [exercise-folder]/
-├── index.php                  # Front Controller / Entry point
-├── controllers/               # Handles HTTP requests & coordinates flow
-│   └── [Name]Controller.php
-├── models/                    # Business logic & SQLite persistence
-│   └── [Name].php
-├── views/                     # HTML5/CSS3/JS presentation layer
-│   └── [name]_view.php
-└── data/                      # Local SQLite database and seed storage
-    └── .gitkeep
+â”œâ”€â”€ index.php                  # Front Controller / Entry point
+â”œâ”€â”€ controllers/               # Handles HTTP requests & coordinates flow
+â”‚   â””â”€â”€ [Name]Controller.php
+â”œâ”€â”€ models/                    # Business logic & SQLite persistence
+â”‚   â””â”€â”€ [Name].php
+â”œâ”€â”€ views/                     # HTML5/CSS3/JS presentation layer
+â”‚   â””â”€â”€ [name]_view.php
+â””â”€â”€ data/                      # Local SQLite database and seed storage
+    â””â”€â”€ .gitkeep
 ```
 
 - **Model:** Encapsulates business logic, data rules, and SQL interactions using `PDO` prepared statements (with `PDO::ATTR_ERRMODE => ERRMODE_EXCEPTION` to prevent SQL injection). Tables are automatically created and seeded on first run if the SQLite file is empty.
@@ -50,7 +50,7 @@ Each exercise is organized under a decoupled and self-contained structure:
 
 ---
 
-## 🛠️ Environment Requirements
+## ðŸ› ï¸ Environment Requirements
 
 - **PHP 8.0** or higher (PHP 8.2 recommended).
 - Standard extensions enabled (included by default in XAMPP):
@@ -61,7 +61,7 @@ Each exercise is organized under a decoupled and self-contained structure:
 
 ---
 
-## 💻 Installation & Execution Instructions
+## ðŸ’» Installation & Execution Instructions
 
 ### Option 1: Using XAMPP (Apache)
 1. Place or clone this repository into your XAMPP `htdocs` directory:
@@ -88,7 +88,7 @@ Each exercise is organized under a decoupled and self-contained structure:
 
 ---
 
-## 📌 Module Feature Overview
+## ðŸ“Œ Module Feature Overview
 
 1. **Task List (To-Do):**
    - Create tasks with priority tiers (High, Medium, Low).

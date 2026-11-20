@@ -8,7 +8,7 @@ $exercisesList = [
     [
         'id' => 1,
         'title' => 'Task List',
-        'folder' => '01-lista-tareas',
+        'folder' => '01-task-list',
         'icon' => 'bi-check2-square',
         'color' => 'primary',
         'desc' => 'Interactive web application allowing users to create, delete, and mark tasks as completed with status filtering and SQLite database persistence.',
@@ -19,7 +19,7 @@ $exercisesList = [
     [
         'id' => 2,
         'title' => 'Tip Calculator',
-        'folder' => '02-calculadora-propinas',
+        'folder' => '02-tip-calculator',
         'icon' => 'bi-calculator',
         'color' => 'success',
         'desc' => 'Automatically calculates tip amount, total bill with tip, per-person split for shared dining, rounding options, and stores recent calculation history.',
@@ -30,7 +30,7 @@ $exercisesList = [
     [
         'id' => 3,
         'title' => 'Password Generator',
-        'folder' => '03-generador-contrasenas',
+        'folder' => '03-password-generator',
         'icon' => 'bi-shield-lock',
         'color' => 'warning',
         'desc' => 'Cryptographically secure password generator with customizable length, character sets (uppercase, lowercase, numbers, symbols), entropy score, and clipboard copy.',
@@ -41,7 +41,7 @@ $exercisesList = [
     [
         'id' => 4,
         'title' => 'Expense Manager',
-        'folder' => '04-gestor-gastos',
+        'folder' => '04-expense-manager',
         'icon' => 'bi-cash-coin',
         'color' => 'danger',
         'desc' => 'Track daily expenses by category, view monthly summaries, daily averages, highest expense indicators, and visual percentage breakdowns.',
@@ -52,7 +52,7 @@ $exercisesList = [
     [
         'id' => 5,
         'title' => 'Booking System',
-        'folder' => '05-sistema-reservas',
+        'folder' => '05-booking-system',
         'icon' => 'bi-calendar-check',
         'color' => 'info',
         'desc' => 'Online appointment and service reservation system featuring real-time schedule slot availability checks and digital confirmation vouchers.',
@@ -63,7 +63,7 @@ $exercisesList = [
     [
         'id' => 6,
         'title' => 'Notes Manager',
-        'folder' => '06-gestor-notas',
+        'folder' => '06-notes-manager',
         'icon' => 'bi-journal-text',
         'color' => 'secondary',
         'desc' => 'Digital sticky-notes board with color themes, category organization, note pinning for priority items, and instant live text search.',
@@ -74,7 +74,7 @@ $exercisesList = [
     [
         'id' => 7,
         'title' => 'Event Calendar',
-        'folder' => '07-calendario-eventos',
+        'folder' => '07-event-calendar',
         'icon' => 'bi-calendar-event',
         'color' => 'primary',
         'desc' => 'Interactive monthly calendar grid with complete event management (create, edit, delete), color tags, and automated notification reminders.',
@@ -85,7 +85,7 @@ $exercisesList = [
     [
         'id' => 8,
         'title' => 'Recipe Platform',
-        'folder' => '08-plataforma-recetas',
+        'folder' => '08-recipe-platform',
         'icon' => 'bi-egg-fried',
         'color' => 'success',
         'desc' => 'Culinary sharing platform to browse, filter by meal type or ingredients, view detailed step-by-step instructions, and publish new cooking recipes.',
@@ -96,7 +96,7 @@ $exercisesList = [
     [
         'id' => 9,
         'title' => 'Memory Game',
-        'folder' => '09-juego-memoria',
+        'folder' => '09-memory-game',
         'icon' => 'bi-grid-3x3-gap',
         'color' => 'purple',
         'desc' => 'Classic 3D card-matching memory game with 3 difficulty levels (Easy, Medium, Hard), live stopwatch timer, move counter, and persistent high scores leaderboard.',
@@ -107,7 +107,7 @@ $exercisesList = [
     [
         'id' => 10,
         'title' => 'Poll Platform',
-        'folder' => '10-plataforma-encuestas',
+        'folder' => '10-poll-platform',
         'icon' => 'bi-bar-chart-line',
         'color' => 'warning',
         'desc' => 'Online survey and polling tool allowing users to create questions, vote with session protection, and view dynamic visual reports rendered with Chart.js.',
@@ -118,7 +118,7 @@ $exercisesList = [
     [
         'id' => 11,
         'title' => 'Online Stopwatch',
-        'folder' => '11-cronometro-online',
+        'folder' => '11-online-stopwatch',
         'icon' => 'bi-stopwatch',
         'color' => 'dark',
         'desc' => 'High-precision digital stopwatch with start, pause, resume, reset, lap recording with fastest/slowest lap detection, session saving, and CSV export.',

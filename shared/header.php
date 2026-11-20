@@ -9,17 +9,17 @@ if (!isset($activeExercise)) {
 $basePath = isset($depth) && $depth === 1 ? '../' : './';
 
 $exercises = [
-    1 => ['name' => '1. Task List', 'folder' => '01-lista-tareas', 'icon' => 'bi-check2-square'],
-    2 => ['name' => '2. Tip Calculator', 'folder' => '02-calculadora-propinas', 'icon' => 'bi-calculator'],
-    3 => ['name' => '3. Password Generator', 'folder' => '03-generador-contrasenas', 'icon' => 'bi-shield-lock'],
-    4 => ['name' => '4. Expense Manager', 'folder' => '04-gestor-gastos', 'icon' => 'bi-cash-coin'],
-    5 => ['name' => '5. Booking System', 'folder' => '05-sistema-reservas', 'icon' => 'bi-calendar-check'],
-    6 => ['name' => '6. Notes Manager', 'folder' => '06-gestor-notas', 'icon' => 'bi-journal-text'],
-    7 => ['name' => '7. Event Calendar', 'folder' => '07-calendario-eventos', 'icon' => 'bi-calendar-event'],
-    8 => ['name' => '8. Recipe Platform', 'folder' => '08-plataforma-recetas', 'icon' => 'bi-egg-fried'],
-    9 => ['name' => '9. Memory Game', 'folder' => '09-juego-memoria', 'icon' => 'bi-grid-3x3-gap'],
-    10 => ['name' => '10. Poll Platform', 'folder' => '10-plataforma-encuestas', 'icon' => 'bi-bar-chart-line'],
-    11 => ['name' => '11. Online Stopwatch', 'folder' => '11-cronometro-online', 'icon' => 'bi-stopwatch'],
+    1 => ['name' => '1. Task List', 'folder' => '01-task-list', 'icon' => 'bi-check2-square'],
+    2 => ['name' => '2. Tip Calculator', 'folder' => '02-tip-calculator', 'icon' => 'bi-calculator'],
+    3 => ['name' => '3. Password Generator', 'folder' => '03-password-generator', 'icon' => 'bi-shield-lock'],
+    4 => ['name' => '4. Expense Manager', 'folder' => '04-expense-manager', 'icon' => 'bi-cash-coin'],
+    5 => ['name' => '5. Booking System', 'folder' => '05-booking-system', 'icon' => 'bi-calendar-check'],
+    6 => ['name' => '6. Notes Manager', 'folder' => '06-notes-manager', 'icon' => 'bi-journal-text'],
+    7 => ['name' => '7. Event Calendar', 'folder' => '07-event-calendar', 'icon' => 'bi-calendar-event'],
+    8 => ['name' => '8. Recipe Platform', 'folder' => '08-recipe-platform', 'icon' => 'bi-egg-fried'],
+    9 => ['name' => '9. Memory Game', 'folder' => '09-memory-game', 'icon' => 'bi-grid-3x3-gap'],
+    10 => ['name' => '10. Poll Platform', 'folder' => '10-poll-platform', 'icon' => 'bi-bar-chart-line'],
+    11 => ['name' => '11. Online Stopwatch', 'folder' => '11-online-stopwatch', 'icon' => 'bi-stopwatch'],
 ];
 ?>
 <!DOCTYPE html>
