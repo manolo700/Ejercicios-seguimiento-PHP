@@ -43,7 +43,7 @@ class Event {
                 'event_date' => $today,
                 'start_time' => '18:00',
                 'end_time' => '20:00',
-                'category' => 'Académico',
+                'category' => 'Academic',
                 'color' => '#dc2626',
                 'has_reminder' => 1,
                 'reminder_note' => 'Verify all tests and run git status before push'
@@ -55,7 +55,7 @@ class Event {
                 'event_date' => $tomorrow,
                 'start_time' => '10:00',
                 'end_time' => '11:30',
-                'category' => 'Trabajo',
+                'category' => 'Work',
                 'color' => '#2563eb',
                 'has_reminder' => 1,
                 'reminder_note' => 'Prepare architecture diagrams'
@@ -67,7 +67,7 @@ class Event {
                 'event_date' => $nextWeek,
                 'start_time' => '15:00',
                 'end_time' => '17:00',
-                'category' => 'Conferencia',
+                'category' => 'Conference',
                 'color' => '#16a34a',
                 'has_reminder' => 0,
                 'reminder_note' => ''

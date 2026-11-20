@@ -23,6 +23,14 @@ class Task {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )";
         $this->db->exec($sql);
+
+        // Preload sample tasks if empty
+        $count = (int)$this->db->query("SELECT COUNT(*) FROM tasks")->fetchColumn();
+        if ($count === 0) {
+            $this->add('Complete PHP MVC web project', 'high');
+            $this->add('Review unit test coverage and clean code principles', 'medium');
+            $this->add('Prepare final project documentation and slides', 'low');
+        }
     }
 
     /**
